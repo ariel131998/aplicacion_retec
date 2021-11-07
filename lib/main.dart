@@ -1,22 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_retec/src/pages/tema/palette.dart';
-import 'package:flutter_retec/src/routes/routes.dart';
-void main() => runApp(MyApp());
+import 'package:flutter_retec/routes/routes.dart';
+import 'package:flutter_retec/tema/palette.dart';
+
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
-  final selection = Colors.green[400]!;
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Palette.kToDark,
-        //Colors.amber 
-      ),
-      title: 'Retec App',
-      initialRoute: '/LoginScreen',
+      theme: ThemeData(primarySwatch: Palette.kToDark),
       routes: getAplicationRoutes(),
+      initialRoute: '/LoginScreen',
     );
   }
 }
