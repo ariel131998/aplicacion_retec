@@ -4,8 +4,7 @@ import 'package:flutter_retec/src/pages/login_screen.dart';
 
 Map<String, WidgetBuilder> getAplicationRoutes() {
   return <String, WidgetBuilder>{
-    '/LoginScreen': (context) =>   LoginScreen(), //ariel
-    '/ClienteScreen': (context) => ClienteScreen() // ariel
-    
+    '/LoginScreen': (context) => const LoginScreen(), //ariel
+    '/ClienteScreen': (context) => const ClienteScreen() // ariel
   };
 }
