@@ -84,7 +84,7 @@ Widget passwordTextField() {
      builder: (BuildContext context, AsyncSnapshot snapshot){
        return ElevatedButton(
          onPressed: (){
-           Navigator.of(context).pushNamed('/ClienteScreen');
+           Navigator.of(context).pushNamed('/ClienteScreen2');
          }, 
          child: Container(
            padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
@@ -104,7 +104,7 @@ Widget passwordTextField() {
       builder: (BuildContext context, AsyncSnapshot snapshot){
         return TextButton(
           onPressed:(){
-
+            Navigator.of(context).pushNamed('/RecuperarContrasena');
           }, 
           child: Text('Recuperar contraseña'),
         );
@@ -118,6 +118,6 @@ Widget passwordTextField() {
 
 
 
-
+//falta agregar boton ver contrasena y logotipo encima de la foto.
 // onPressed: () {
 //             Navigator.of(context).pushNamed('/ClienteScreen');
