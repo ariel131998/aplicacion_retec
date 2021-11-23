@@ -5,6 +5,7 @@ import 'package:flutter_retec/src/pages/cliente_scrren_prueba.dart';
 import 'package:flutter_retec/src/pages/login_screen.dart';
 import 'package:flutter_retec/tema/palette.dart';
 
+<<<<<<< HEAD
 //pruebas firebase
 import 'package:firebase_core/firebase_core.dart'; // (Firebase)
 import 'package:firebase_auth/firebase_auth.dart'; // (Firebase)
@@ -14,8 +15,13 @@ Future<void> main() async{
   await Firebase.initializeApp(); //tenemos que esperar los servicios de firebase (Firebase)
   runApp(MyApp());
 } 
+=======
+void main() => runApp(const MyApp());
+>>>>>>> VersionEstable
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(//se encarga de checar los servicios
@@ -37,6 +43,7 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+<<<<<<< HEAD
 
 }
 //clase que se encargara de definir la ruta inicial segun el estado
@@ -52,3 +59,6 @@ class ChecarAutentificacion extends StatelessWidget {
     return LoginScreen();
     }
 }
+=======
+}
+>>>>>>> VersionEstable

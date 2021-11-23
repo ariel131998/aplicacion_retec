@@ -7,8 +7,13 @@ import 'package:provider/provider.dart';
 import '../../main.dart'; //(firebase)
 
 class LoginScreen extends StatelessWidget {
+<<<<<<< HEAD
   final passwordController = TextEditingController();
   final emailController = TextEditingController();
+=======
+  const LoginScreen({Key? key}) : super(key: key);
+
+>>>>>>> VersionEstable
   //static String id = 'login_page '; // ver si me va a servir
   @override
   Widget build(BuildContext context) {
@@ -21,6 +26,7 @@ class LoginScreen extends StatelessWidget {
       body: Center(
           child: Column(
         children: [
+<<<<<<< HEAD
           Flexible(// o cambiar por container para evitar que se haga chico
             child: Stack(children: <Widget>[//permite widgets encimados
               Image.asset(
@@ -48,6 +54,22 @@ class LoginScreen extends StatelessWidget {
           _TextRecuperarCont(),
           SizedBox(height: 15.0),
           _RegistrarUser(),
+=======
+          Flexible(
+            child: Image.asset(
+              'assets/fondo_login.jpg',
+              height: 350.0,
+            ),
+          ),
+          const SizedBox(height: 15.0),
+          userTextField(),
+          const SizedBox(height: 20.0),
+          passwordTextField(),
+          const SizedBox(height: 15.0),
+          _bottonLogin(),
+          const SizedBox(height: 15.0),
+          _TextRecuperarCont(),
+>>>>>>> VersionEstable
         ],
       )),
     );
@@ -57,11 +79,11 @@ class LoginScreen extends StatelessWidget {
     return StreamBuilder(
         builder: (BuildContext context, AsyncSnapshot snapshot) {
       return Container(
-        padding: EdgeInsets.symmetric(horizontal: 20.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: TextField(
           controller: emailController,
           keyboardType: TextInputType.emailAddress,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             icon: Icon(Icons.email),
             hintText: 'ejemplo@correo.com',
             labelText: 'Correo electronico',
@@ -78,12 +100,12 @@ class LoginScreen extends StatelessWidget {
     return StreamBuilder(
         builder: (BuildContext context, AsyncSnapshot snapshot) {
       return Container(
-        padding: EdgeInsets.symmetric(horizontal: 20.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: TextField(
           controller: passwordController,
           keyboardType: TextInputType.emailAddress,
           obscureText: true,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             icon: Icon(Icons.lock),
             hintText: 'Contraseña',
             labelText: 'Contraseña',
@@ -97,11 +119,15 @@ class LoginScreen extends StatelessWidget {
   }
 
   Widget _bottonLogin() {
+<<<<<<< HEAD
     //Future<String> error;
+=======
+>>>>>>> VersionEstable
     return StreamBuilder(
         builder: (BuildContext context, AsyncSnapshot snapshot) {
       return ElevatedButton(
         onPressed: () {
+<<<<<<< HEAD
           //Navigator.of(context).pushNamed('/ClienteScreen2');
           //String mostrarError = context.read<AuthentificationFirebase>().errores.errorLogIn;
           //String error; 
@@ -127,6 +153,13 @@ class LoginScreen extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
           child: Text(
+=======
+          Navigator.of(context).pushNamed('/ClienteScreen');
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
+          child: const Text(
+>>>>>>> VersionEstable
             'Iniciar Sesion',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0),
           ),
@@ -136,10 +169,12 @@ class LoginScreen extends StatelessWidget {
     });
   }
 
+  // ignore: non_constant_identifier_names
   Widget _TextRecuperarCont() {
     return StreamBuilder(
         builder: (BuildContext context, AsyncSnapshot snapshot) {
       return TextButton(
+<<<<<<< HEAD
         onPressed: () {
           Navigator.of(context).pushNamed('/RecuperarContrasena');
         },
@@ -160,6 +195,13 @@ class LoginScreen extends StatelessWidget {
       );
     });
   }
+=======
+        onPressed: () {},
+        child: const Text('Recuperar contraseña'),
+      );
+    });
+  }
+>>>>>>> VersionEstable
 }
 
 
