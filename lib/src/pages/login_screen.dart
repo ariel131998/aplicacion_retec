@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+//import 'package:firebase_auth/firebase_auth.dart';//autentificacion.
+import 'package:flutter_retec/authentification/authentification_firebase.dart';
+import 'package:provider/provider.dart';
 
+//import '../../main.dart'; //(firebase)
+
+class LoginScreen extends StatelessWidget {
+  final passwordController = TextEditingController();
+  final emailController = TextEditingController();
   //static String id = 'login_page '; // ver si me va a servir
   @override
   Widget build(BuildContext context) {
+    //FirebaseAuth auth = FirebaseAuth.instance;
     return Scaffold(
       // appBar: AppBar(
       //   //title: const Text('Login retec'),
@@ -14,22 +21,36 @@ class LoginScreen extends StatelessWidget {
       body: Center(
           child: Column(
         children: [
-          Flexible(
-            child: Image.asset(
-              'assets/fondo_login.jpg',
-              height: 350.0,
-            ),
+          Flexible(// o cambiar por container para evitar que se haga chico
+            child: Stack(children: <Widget>[//permite widgets encimados
+              Image.asset(
+                'assets/fondo_login.jpg',
+                //height: 350.0,
+                //alignment: Alignment.center,
+                width: 550.0,//evita que se haga mas chica la imagen al ser flexible
+                
+              ),
+              Image.asset(
+                  'assets/Retec_Blanco_bordes.png',
+                  height: 350.0,
+                  //width: 450,
+                  
+              ),
+            ]),
           ),
-          const SizedBox(height: 15.0),
+          SizedBox(height: 15.0),
           userTextField(),
-          const SizedBox(height: 20.0),
+          SizedBox(height: 20.0),
           passwordTextField(),
-          const SizedBox(height: 15.0),
+          SizedBox(height: 15.0),
           _bottonLogin(),
           const SizedBox(height: 15.0),
           _buttonRegistro(),
           const SizedBox(height: 15.0),
+          //SizedBox(height: 15.0),
           _TextRecuperarCont(),
+          SizedBox(height: 15.0),
+          _RegistrarUser(),
         ],
       )),
     );
@@ -41,6 +62,7 @@ class LoginScreen extends StatelessWidget {
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: TextField(
+          controller: emailController,
           keyboardType: TextInputType.emailAddress,
           decoration: const InputDecoration(
             icon: Icon(Icons.email),
@@ -61,6 +83,7 @@ class LoginScreen extends StatelessWidget {
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: TextField(
+          controller: passwordController,
           keyboardType: TextInputType.emailAddress,
           obscureText: true,
           decoration: const InputDecoration(
@@ -77,15 +100,36 @@ class LoginScreen extends StatelessWidget {
   }
 
   Widget _bottonLogin() {
+    //Future<String> error;
     return StreamBuilder(
         builder: (BuildContext context, AsyncSnapshot snapshot) {
       return ElevatedButton(
         onPressed: () {
-          Navigator.of(context).pushNamed('/ClienteScreen');
+          //Navigator.of(context).pushNamed('/ClienteScreen2');
+          //String mostrarError = context.read<AuthentificationFirebase>().errores.errorLogIn;
+          //String error; 
+
+          context.read<AuthentificationFirebase>().signIn(
+            email: emailController.text.trim(),
+            password: passwordController.text.trim(),
+          );
+
+
+          //error = context.read<AuthentificationFirebase>().errores.errorLogIn2;
+          //print('error2: $mostrarError');//ya tengo el error, solo falta saber cuando ya hay error.
+          //print('error1: $error');
+          // if ( error == 'error' ) {
+          //   print('prueba: $mostrarError');}
+          // } else {
+          //   print(mostrarError);
+          // }
+          //print('email controlerr:$emailController');
+          //ChecarAutentificacion();
+          //Navigator.of(context).pushNamed('/LoginScreen');
         },
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
-          child: const Text(
+          padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
+          child: Text(
             'Iniciar Sesion',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0),
           ),
@@ -100,12 +144,13 @@ class LoginScreen extends StatelessWidget {
     return StreamBuilder(
         builder: (BuildContext context, AsyncSnapshot snapshot) {
       return TextButton(
-        onPressed: () {},
-        child: const Text('Recuperar contraseña'),
+        onPressed: () {
+          Navigator.of(context).pushNamed('/RecuperarContrasena');
+        },
+        child: Text('Recuperar contraseña'),
       );
     });
   }
-
   Widget _buttonRegistro() {
     return StreamBuilder(
       builder: (BuildContext context, AsyncSnapshot snapshot){
@@ -122,6 +167,23 @@ class LoginScreen extends StatelessWidget {
 
 
 
+  Widget _RegistrarUser() {
+    return StreamBuilder(
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+      return TextButton(
+        onPressed: () {
+          Navigator.of(context).pushNamed('/PruebaRegistroUsuario');
+        },
+        child: Text('Registra usuario'),
+      );
+    });
+  }
+}
 
+
+
+//falta agregar boton ver contrasena y logotipo encima de la foto.
 // onPressed: () {
 //             Navigator.of(context).pushNamed('/ClienteScreen');
+
+//todavia falta checar que hacer cuando se quiera iniciar sesion y a donde mandar.
