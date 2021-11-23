@@ -49,8 +49,8 @@ class LoginScreen extends StatelessWidget {
           const SizedBox(height: 15.0),
           //SizedBox(height: 15.0),
           _TextRecuperarCont(),
-          SizedBox(height: 15.0),
-          _RegistrarUser(),
+          // SizedBox(height: 15.0),
+          // _RegistrarUser(),
         ],
       )),
     );
@@ -163,21 +163,17 @@ class LoginScreen extends StatelessWidget {
       }
     );
   }
-}
-
-
-
-  Widget _RegistrarUser() {
-    return StreamBuilder(
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-      return TextButton(
-        onPressed: () {
-          Navigator.of(context).pushNamed('/PruebaRegistroUsuario');
-        },
-        child: Text('Registra usuario'),
-      );
-    });
-  }
+  // Widget _RegistrarUser() {
+  //   return StreamBuilder(
+  //       builder: (BuildContext context, AsyncSnapshot snapshot) {
+  //     return TextButton(
+  //       onPressed: () {
+  //         Navigator.of(context).pushNamed('/PruebaRegistroUsuario');
+  //       },
+  //       child: Text('Registra usuario'),
+  //     );
+  //   });
+  // }
 }
 
 

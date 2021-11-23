@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_retec/authentification/authentification_firebase.dart';
 import 'package:flutter_retec/routes/routes.dart';
+import 'package:flutter_retec/src/pages/bienvenida_page.dart';
 import 'package:flutter_retec/src/pages/cliente_scrren_prueba.dart';
 import 'package:flutter_retec/src/pages/login_screen.dart';
+import 'package:flutter_retec/src/pages/registro_cliente_page.dart';
 import 'package:flutter_retec/tema/palette.dart';
 
 //pruebas firebase

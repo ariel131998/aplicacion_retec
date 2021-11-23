@@ -14,7 +14,7 @@ Map<String, WidgetBuilder> getAplicationRoutes() {
     '/ClienteScreen': (context) => ClienteScreen(), // ariel --puede que ya no la use por ser stateless
     '/RecuperarContrasena': (context) => RecuperarContrasena(),
     '/ClienteScreen2': (context) => ClienteScreen2(),
-    '/PruebaRegistroUsuario': (context) => PruebaRegistroUsuario()
+    '/PruebaRegistroUsuario': (context) => PruebaRegistroUsuario(),
     '/BienvenidaPage': (context) => const BienvenidaPage(),     //Isaac
     '/RegistroClientePage': (context) => const RegistroClientePage(),     //Isaac
     '/RegistroRetecPage': (context) => const RegistroRetecPage(),     //Isaac 
