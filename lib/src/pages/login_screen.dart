@@ -4,16 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_retec/authentification/authentification_firebase.dart';
 import 'package:provider/provider.dart';
 
-import '../../main.dart'; //(firebase)
+//import '../../main.dart'; //(firebase)
 
 class LoginScreen extends StatelessWidget {
-<<<<<<< HEAD
   final passwordController = TextEditingController();
   final emailController = TextEditingController();
-=======
-  const LoginScreen({Key? key}) : super(key: key);
-
->>>>>>> VersionEstable
   //static String id = 'login_page '; // ver si me va a servir
   @override
   Widget build(BuildContext context) {
@@ -26,7 +21,6 @@ class LoginScreen extends StatelessWidget {
       body: Center(
           child: Column(
         children: [
-<<<<<<< HEAD
           Flexible(// o cambiar por container para evitar que se haga chico
             child: Stack(children: <Widget>[//permite widgets encimados
               Image.asset(
@@ -54,22 +48,6 @@ class LoginScreen extends StatelessWidget {
           _TextRecuperarCont(),
           SizedBox(height: 15.0),
           _RegistrarUser(),
-=======
-          Flexible(
-            child: Image.asset(
-              'assets/fondo_login.jpg',
-              height: 350.0,
-            ),
-          ),
-          const SizedBox(height: 15.0),
-          userTextField(),
-          const SizedBox(height: 20.0),
-          passwordTextField(),
-          const SizedBox(height: 15.0),
-          _bottonLogin(),
-          const SizedBox(height: 15.0),
-          _TextRecuperarCont(),
->>>>>>> VersionEstable
         ],
       )),
     );
@@ -119,15 +97,11 @@ class LoginScreen extends StatelessWidget {
   }
 
   Widget _bottonLogin() {
-<<<<<<< HEAD
     //Future<String> error;
-=======
->>>>>>> VersionEstable
     return StreamBuilder(
         builder: (BuildContext context, AsyncSnapshot snapshot) {
       return ElevatedButton(
         onPressed: () {
-<<<<<<< HEAD
           //Navigator.of(context).pushNamed('/ClienteScreen2');
           //String mostrarError = context.read<AuthentificationFirebase>().errores.errorLogIn;
           //String error; 
@@ -153,13 +127,6 @@ class LoginScreen extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
           child: Text(
-=======
-          Navigator.of(context).pushNamed('/ClienteScreen');
-        },
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
-          child: const Text(
->>>>>>> VersionEstable
             'Iniciar Sesion',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0),
           ),
@@ -174,7 +141,6 @@ class LoginScreen extends StatelessWidget {
     return StreamBuilder(
         builder: (BuildContext context, AsyncSnapshot snapshot) {
       return TextButton(
-<<<<<<< HEAD
         onPressed: () {
           Navigator.of(context).pushNamed('/RecuperarContrasena');
         },
@@ -195,13 +161,6 @@ class LoginScreen extends StatelessWidget {
       );
     });
   }
-=======
-        onPressed: () {},
-        child: const Text('Recuperar contraseña'),
-      );
-    });
-  }
->>>>>>> VersionEstable
 }
 
 
