@@ -27,6 +27,8 @@ class LoginScreen extends StatelessWidget {
           const SizedBox(height: 15.0),
           _bottonLogin(),
           const SizedBox(height: 15.0),
+          _buttonRegistro(),
+          const SizedBox(height: 15.0),
           _TextRecuperarCont(),
         ],
       )),
@@ -102,6 +104,19 @@ class LoginScreen extends StatelessWidget {
         child: const Text('Recuperar contraseña'),
       );
     });
+  }
+
+  Widget _buttonRegistro() {
+    return StreamBuilder(
+      builder: (BuildContext context, AsyncSnapshot snapshot){
+        return TextButton(
+          onPressed: (){
+            Navigator.pushNamed(context, '/BienvenidaPage');
+          }, 
+          child: Text('Registrarse')
+        );
+      }
+    );
   }
 }
 
