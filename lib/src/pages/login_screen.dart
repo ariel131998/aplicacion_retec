@@ -44,7 +44,10 @@ class LoginScreen extends StatelessWidget {
           passwordTextField(),
           SizedBox(height: 15.0),
           _bottonLogin(),
-          SizedBox(height: 15.0),
+          const SizedBox(height: 15.0),
+          _buttonRegistro(),
+          const SizedBox(height: 15.0),
+          //SizedBox(height: 15.0),
           _TextRecuperarCont(),
           SizedBox(height: 15.0),
           _RegistrarUser(),
@@ -148,6 +151,20 @@ class LoginScreen extends StatelessWidget {
       );
     });
   }
+  Widget _buttonRegistro() {
+    return StreamBuilder(
+      builder: (BuildContext context, AsyncSnapshot snapshot){
+        return TextButton(
+          onPressed: (){
+            Navigator.pushNamed(context, '/BienvenidaPage');
+          }, 
+          child: Text('Registrarse')
+        );
+      }
+    );
+  }
+}
+
 
 
   Widget _RegistrarUser() {
