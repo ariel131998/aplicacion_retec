@@ -2,7 +2,7 @@
     package="com.example.flutter_retec">
    <application
         android:label="flutter_retec"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"> 
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

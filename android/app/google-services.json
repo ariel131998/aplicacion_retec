@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "399144616669",
+    "project_id": "retec-7236e",
+    "storage_bucket": "retec-7236e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:399144616669:android:d8dec89222e2b3b8805134",
+        "android_client_info": {
+          "package_name": "com.example.flutter_retec"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "399144616669-ccq4uos30o1lrjle1oef5al77gtmbcci.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmtVyK4DaNQmI6jld1myAwN4TENAjfyJo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "399144616669-ccq4uos30o1lrjle1oef5al77gtmbcci.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
