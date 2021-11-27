@@ -47,7 +47,7 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
   @override
   Widget build(BuildContext context) {
     numTarjeta=0;
-    colocarNombreDataTarjetas();//checar si aqui funciona puede dar error.
+    //colocarNombreDataTarjetas();//checar si aqui funciona puede dar error.
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(120.0),
@@ -102,12 +102,7 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
     });
   }
 
-  Widget _crearTargeta() {
-    // colocarNombreDataTarjetas().then((String result) {
-    //   setState(() {
-    //     nombre = result;
-    //   });
-    // });
+  Widget _crearTargeta(String name) {
     return Card(
       elevation: 10.0,
       shape:  RoundedRectangleBorder (borderRadius: BorderRadius.circular(20.0)), //redondeado de tarjea
@@ -122,7 +117,7 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
               placeholder: AssetImage('assets/jar-loading.gif'),
               image: AssetImage('assets/electricista.png'),//falta cambir por varios.
             ),
-            title: Text(cambiarNombre()),//aqui hacer que vaya cambiando
+            title: Text(name),//aqui hacer que vaya cambiando
             subtitle: Text("cambiarCategoria()"),
           ),
           Row(
@@ -143,29 +138,60 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
     );
   }
 
-  Widget _crearTargetas(){//se encarga de colocar targetas en un listview
-    return ListView(
-      padding: EdgeInsets.all(10.0), //espacio en los lados de cada widget
-      children: <Widget>[
-        SizedBox(height: 15.0),
-        _obtenerUbicacion(),
-        SizedBox(height: 15.0),
-        _crearTargeta(),
-        SizedBox(height: 30.0),
-        _crearTargeta(),
-        SizedBox(height: 30.0),
-        _crearTargeta(),
-        SizedBox(height: 30.0),
-        _crearTargeta(),
-        SizedBox(height: 30.0),
-        _crearTargeta(),
-        SizedBox(height: 30.0),
-        //quitar es de prueba para subir datos a base
-        ElevatedButton(
-          onPressed: mandarDataTarjetas,
-          child: Text('subir info'),
-          ),
-      ],
+  // Widget _crearTargetas(){//se encarga de colocar targetas en un listview
+  //   return ListView(
+  //     padding: EdgeInsets.all(10.0), //espacio en los lados de cada widget
+  //     children: <Widget>[
+  //       SizedBox(height: 15.0),
+  //       _obtenerUbicacion(),
+  //       SizedBox(height: 15.0),
+  //       _crearTargeta(),
+  //       SizedBox(height: 30.0),
+  //       _crearTargeta(),
+  //       SizedBox(height: 30.0),
+  //       _crearTargeta(),
+  //       SizedBox(height: 30.0),
+  //       _crearTargeta(),
+  //       SizedBox(height: 30.0),
+  //       _crearTargeta(),
+  //       SizedBox(height: 30.0),
+  //       //quitar es de prueba para subir datos a base
+  //       ElevatedButton(
+  //         onPressed: mandarDataTarjetas,
+  //         child: Text('subir info'),
+  //         ),
+  //     ],
+  //   );
+  // }
+
+  Widget _crearListaTarjetas2(){
+    return Center(
+      child: StreamBuilder(
+        stream: FirebaseFirestore.instance.collection('usuarios').snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
+          if(!snapshot.hasData){
+            return Center(
+              child: Text('No hay info aun'),//aqui puede ir un indicador de cargo
+            );
+          }
+          return ListView.builder(//retornamos las listas existentes
+          //shrinkWrap: true,
+          padding: EdgeInsets.only(left: 10, right: 10, top: 10),
+          itemCount: snapshot.data!.docs.length, //cantidad de elementos que se encuentran en la base de datos
+          itemBuilder: (BuildContext context, int index){//inndex cambiar por doc de snapshot
+            String temp = snapshot.data!.docs.elementAt(index).get("name");
+            return Column(
+              children: [
+                _crearTargeta(temp),
+                SizedBox(height: 15.0),
+              ],
+            );
+            //return _crearTargeta(snapshot.data!.doc("name").get().toString());//modificar para mandar parametros
+          },
+          );
+        },
+        
+      ),
     );
   }
 
@@ -202,11 +228,7 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
 
   Widget _crearVistasMenu(int _selectedIndex, BuildContext context) {//crea la vista de cada boton del menu.
     List<Widget> _widgetOptions = <Widget>[
-      // Text(
-      //   'Vista 1',
-      //   style: optionStyle,
-      // ),
-      _crearTargetas(),
+      _crearListaTarjetas2(),
       Text(
         'Prueba cambio',
         style: optionStyle,
@@ -220,11 +242,11 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
     return _widgetOptions.elementAt(_selectedIndex);
   }
 
-  Widget _obtenerUbicacion(){
-    return Center(
-      child: Text('Ahora| obtener ubicacion')
-    );
-  }
+  // Widget _obtenerUbicacion(){
+  //   return Center(
+  //     child: Text('Ahora| obtener ubicacion')
+  //   );
+  // }
 
   Widget _vistaCuentaUsuario(BuildContext context) {
     return Center(
@@ -239,7 +261,7 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
   //vista de perfil la va a desarrollar jose.
  //no me deja poner el read
 
-  //metodo para registar algun usuario
+  //metodo para registar algun usuario, ya no es utilizado. 
   mandarDataTarjetas(){
     //crear varible de los datos a mandar a cloudfirestore
     //es mejor crear una clase especifica para mandar los datos, ya que se puede mandar todos los datos del obj
@@ -259,73 +281,6 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
     //para agregar la info a la base de datos
     collectionReference.add(informacionUsuario); //se tendria que ir modificando la informacion del usuario.
   }
-
-  Future<void> colocarNombreDataTarjetas() async{
-    var db = FirebaseFirestore.instance;
-    CollectionReference user = db.collection('usuarios');
-    // DocumentSnapshot snapshot = await user.doc("Wa8k43yDrtexeKkxZ2uN").get();
-    // var data = snapshot.data() as Map;
-    // String userName = data['name'];
-    // return userName;
-    user.get().then((QuerySnapshot querySnapshot){
-      querySnapshot.docs.forEach((element) {
-        mapaUsuarios.add(element["name"]);
-        mapaCategoria.add(element["categoria"]);
-        mapaLogo.add(element["logo"]);
-        mapaTiempo.add(element["tiempo"]);
-        mapaCalificacion.add(element["calificacion"]);
-      });
-    });
-  }
-  String cambiarNombre() {
-    //colocarNombreDataTarjetas();
-    if(numTarjeta<mapaUsuarios.length){
-      String temp = (mapaUsuarios[numTarjeta]).toString();
-      return temp;
-    }
-    else
-      return "vacio";
-  }
-  // String cambiarCategoria() {
-  //   //colocarNombreDataTarjetas();
-  //   if(numTarjeta<mapaUsuarios.length){
-  //     String temp = (mapaCategoria[numTarjeta]).toString();
-  //     //numTarjeta++;
-  //     return temp;
-  //   }
-  //   else
-  //     return "vacio";
-  // }
-  // String cambiarTiempo() {
-  //   //colocarNombreDataTarjetas();
-  //   if(numTarjeta<mapaUsuarios.length){
-  //     String temp = (mapaTiempo[numTarjeta]).toString();
-  //     //numTarjeta++;
-  //     return temp;
-  //   }
-  //   else
-  //     return "vacio";
-  // }
-  // String cambiarIcono() {
-  //   //colocarNombreDataTarjetas();
-  //   if(numTarjeta<mapaUsuarios.length){
-  //     String temp = (mapaLogo[numTarjeta]).toString();
-  //     //numTarjeta++;
-  //     return temp;
-  //   }
-  //   else
-  //     return "vacio";
-  // }
-  // String cambiarCalificacion() {
-  //   //colocarNombreDataTarjetas();
-  //   if(numTarjeta<mapaUsuarios.length){
-  //     String temp = (mapaCalificacion[numTarjeta]).toString();
-  //     //numTarjeta++;
-  //     return temp;
-  //   }
-  //   else
-  //     return "vacio";
-  // }
 
 }
 
@@ -369,4 +324,71 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
   //     setState(() {
   //       usuarioTarjetaDatos["nombre"] = name;
   //     });
+  // }
+
+    // String cambiarCategoria() {
+  //   //colocarNombreDataTarjetas();
+  //   if(numTarjeta<mapaUsuarios.length){
+  //     String temp = (mapaCategoria[numTarjeta]).toString();
+  //     //numTarjeta++;
+  //     return temp;
+  //   }
+  //   else
+  //     return "vacio";
+  // }
+  // String cambiarTiempo() {
+  //   //colocarNombreDataTarjetas();
+  //   if(numTarjeta<mapaUsuarios.length){
+  //     String temp = (mapaTiempo[numTarjeta]).toString();
+  //     //numTarjeta++;
+  //     return temp;
+  //   }
+  //   else
+  //     return "vacio";
+  // }
+  // String cambiarIcono() {
+  //   //colocarNombreDataTarjetas();
+  //   if(numTarjeta<mapaUsuarios.length){
+  //     String temp = (mapaLogo[numTarjeta]).toString();
+  //     //numTarjeta++;
+  //     return temp;
+  //   }
+  //   else
+  //     return "vacio";
+  // }
+  // String cambiarCalificacion() {
+  //   //colocarNombreDataTarjetas();
+  //   if(numTarjeta<mapaUsuarios.length){
+  //     String temp = (mapaCalificacion[numTarjeta]).toString();
+  //     //numTarjeta++;
+  //     return temp;
+  //   }
+  //   else
+  //     return "vacio";
+  // }
+  // Future<void> colocarNombreDataTarjetas() async{
+  //   var db = FirebaseFirestore.instance;
+  //   CollectionReference user = db.collection('usuarios');
+  //   // DocumentSnapshot snapshot = await user.doc("Wa8k43yDrtexeKkxZ2uN").get();
+  //   // var data = snapshot.data() as Map;
+  //   // String userName = data['name'];
+  //   // return userName;
+  //   user.get().then((QuerySnapshot querySnapshot){
+  //     querySnapshot.docs.forEach((element) {
+  //       mapaUsuarios.add(element["name"]);
+  //       mapaCategoria.add(element["categoria"]);
+  //       mapaLogo.add(element["logo"]);
+  //       mapaTiempo.add(element["tiempo"]);
+  //       mapaCalificacion.add(element["calificacion"]);
+  //     });
+  //   });
+  // }
+  // String cambiarNombre() {
+  //   //colocarNombreDataTarjetas();
+  //   if(numTarjeta<mapaUsuarios.length){
+  //     String temp = (mapaUsuarios[numTarjeta]).toString();
+  //     return temp;
+  //   }
+  //   else
+  //     return "vacio";
   // }
