@@ -104,9 +104,3 @@ class LoginScreen extends StatelessWidget {
     });
   }
 }
-
-
-
-
-// onPressed: () {
-//             Navigator.of(context).pushNamed('/ClienteScreen');

@@ -1,8 +1,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.flutter_retec">
+   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
    <application
         android:label="flutter_retec"
         android:icon="@mipmap/ic_launcher">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBagPR1ghkqYPEfBpcl3K3Z3okjoO1_ysw" 
+        />
+        
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
