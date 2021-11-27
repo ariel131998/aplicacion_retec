@@ -1,20 +1,25 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
 //En esta clase vamos a poder monitorear el estado del usurio, si ya tiene iniciada sesion
 //si ya cerro sesion o si se quiere crear o iniciar sesion.
 class AuthentificationFirebase {
   final FirebaseAuth _firebaseAuth;
-  AuthentificationFirebase(this._firebaseAuth);//constructor
+  AuthentificationFirebase(this._firebaseAuth); //constructor
 
-  Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges(); //puse un ? checar para que sirve
+  Stream<User?> get authStateChanges =>
+      _firebaseAuth.authStateChanges(); //puse un ? checar para que sirve
 
   Future<void> singOut() async {
     await _firebaseAuth.signOut();
   }
 
-  Future<String> signIn({required String email, required String password}) async{//iniciar sesion o ingresar
+  Future<String> signIn(
+      {required String email, required String password}) async {
+    //iniciar sesion o ingresar
     try {
-      await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+      await _firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: password);
       return 'inicio sesion'; //checar si no es aqui donde debo mandar a la pagina principal??
       //return ClienteScreen2();
     } on FirebaseAuthException catch (e) {
@@ -27,9 +32,13 @@ class AuthentificationFirebase {
       return e.toString();
     }
   }
-  Future<String> signUp({required String email, required String password}) async{//registrarse agrege el required
+
+  Future<String> signUp(
+      {required String email, required String password}) async {
+    //registrarse agrege el required
     try {
-      await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
+      await _firebaseAuth.createUserWithEmailAndPassword(
+          email: email, password: password);
       Fluttertoast.showToast(
         msg: "Usuario registrado correctamente",
         gravity: ToastGravity.TOP,
@@ -39,6 +48,23 @@ class AuthentificationFirebase {
       Fluttertoast.showToast(
         msg: e.message.toString(),
         gravity: ToastGravity.TOP,
+      );
+      return e.message.toString();
+    }
+  }
+
+  Future<String> recuperarContra({required String email}) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg: "revisa tu correo",
+      );
+      return "revisa tu correo";
+    } on FirebaseAuthException catch (e) {
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg: e.message.toString(),
       );
       return e.message.toString();
     }
