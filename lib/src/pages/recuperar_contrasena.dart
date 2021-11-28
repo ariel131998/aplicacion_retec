@@ -3,26 +3,29 @@ import 'package:flutter_retec/authentification/authentification_firebase.dart';
 //import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 class RecuperarContrasena extends StatelessWidget {
   final emailController = TextEditingController();
+
+  RecuperarContrasena({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Recuperar contrasena'),
+        title: const Text('Recuperar contrasena'),
       ),
       body: Center(
         child: Container(
           child: Column(
             children: [
-              SizedBox(height: 25.0),
-              Text(
+              const SizedBox(height: 25.0),
+              const Text(
                 'Ingresa tu correo electronico',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               ),
-              SizedBox(height: 15.0),
+              const SizedBox(height: 15.0),
               userTextField(),
-              SizedBox(height: 15.0),
+              const SizedBox(height: 15.0),
               botonRecuperar(context),
             ],
           ),
@@ -58,10 +61,8 @@ class RecuperarContrasena extends StatelessWidget {
       return ElevatedButton(
         onPressed: () async {
           context.read<AuthentificationFirebase>().recuperarContra(
-            email: emailController.text.trim(),
-          );
-
-
+                email: emailController.text.trim(),
+              );
 
           //Navigator.pushNamed(context, '/BienvenidaPage');
           // try {
@@ -79,7 +80,7 @@ class RecuperarContrasena extends StatelessWidget {
           //   );
           //Navigator.pushNamed(context, '/LoginScreen');
         },
-        child: Text('Recuperar'),
+        child: const Text('Recuperar'),
         //style: ButtonStyle(backgroundColor: ),
       );
     });

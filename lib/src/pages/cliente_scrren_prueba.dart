@@ -5,6 +5,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_retec/authentification/authentification_firebase.dart';
+import 'package:flutter_retec/src/pages/perfil_screen.dart';
 import 'package:flutter_retec/tema/palette.dart';
 
 import 'package:provider/provider.dart'; //(firebase)
@@ -41,27 +42,6 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
     numTarjeta = 0;
     //colocarNombreDataTarjetas();//checar si aqui funciona puede dar error.
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(120.0),
-        child: AppBar(
-          automaticallyImplyLeading: false,
-          flexibleSpace: Column(
-            children: <Widget>[
-              SizedBox(height: 30.0),
-              Flexible(//aqui esta el error
-                child: FittedBox(    
-                  fit: BoxFit.fill, // otherwise the logo will be tiny
-                  child: ImagenLogo(),
-                ),
-              ),
-              Container(
-                child: TextoAppBar(),
-                padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-              ),
-            ],
-          ),
-        ),
-      ),
       body: Center(
         //child: _widgetOptions.elementAt(_selectedIndex),
         child: _crearVistasMenu(_selectedIndex, context),
@@ -71,24 +51,24 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
   }
 
   Widget ImagenLogo() {
-   // return StreamBuilder(
-       // builder: (BuildContext context, AsyncSnapshot snapshot) {
-      return Container(
-        height: 150,
-        width: 350,
-        child: Image.asset(
-          'assets/Retec_Blanco_bordes.png',
-          //height: 80.0,
-          //alignment: Alignment.topLeft,
-        ),
-      );
+    // return StreamBuilder(
+    // builder: (BuildContext context, AsyncSnapshot snapshot) {
+    return Container(
+      height: 150,
+      width: 350,
+      child: Image.asset(
+        'assets/Retec_Blanco_bordes.png',
+        //height: 80.0,
+        //alignment: Alignment.topLeft,
+      ),
+    );
     //});
   }
 
   Widget TextoAppBar() {
     return StreamBuilder(
         builder: (BuildContext context, AsyncSnapshot stapshot) {
-      return Text(
+      return const Text(
         'Encuentra al personal necesario para tu problema',
         style: TextStyle(
           color: Colors.white,
@@ -98,7 +78,8 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
     });
   }
 
-  Widget _crearTargeta(String name, String categoria, String tiempo, String estrellas, String logo) {
+  Widget _crearTargeta(String name, String categoria, String tiempo,
+      String estrellas, String logo) {
     return Card(
       elevation: 10.0,
       shape: RoundedRectangleBorder(
@@ -110,10 +91,9 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
             //tileColor: Colors.black38,
             //leading: Icon(Icons.photo_album, color: Colors.blue),
             leading: FadeInImage(
-              placeholder: AssetImage('assets/jar-loading.gif'),
+              placeholder: const AssetImage('assets/eclipse.gif'),
               image: NetworkImage(
-                  logo,
-                  
+                logo,
               ), //falta cambir por varios.
             ),
             title: Text(name), //aqui hacer que vaya cambiando
@@ -125,11 +105,11 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
               Text(tiempo),
               TextButton(
                 onPressed: () {},
-                child: Text('Contratar'),
+                child: const Text('Contratar'),
               ),
-              Icon(Icons.star_outline_sharp),
+              const Icon(Icons.star_outline_sharp),
               Text(estrellas),
-              SizedBox(width: 15.0),
+              const SizedBox(width: 15.0),
             ],
           ),
         ],
@@ -138,42 +118,70 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
   }
 
   Widget _crearListaTarjetas2() {
-    String imagen='', categoria='', tiempo='',estrellas='', logo='';
-    return Center(
-      child: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('usuarios').snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (!snapshot.hasData) {
-            return Center(
-              child:
-                  Text('No hay info aun'), //aqui puede ir un indicador de cargo
-            );
-          }
-          return ListView.builder(
-            //retornamos las listas existente
-            //shrinkWrap: true,
-            padding: EdgeInsets.only(left: 10, right: 10, top: 10),
-            itemCount: snapshot.data!.docs
-                .length, //cantidad de elementos que se encuentran en la base de datos
-            itemBuilder: (BuildContext context, int index) {
-              //inndex cambiar por doc de snapshot
-               imagen = snapshot.data!.docs.elementAt(index).get("name");
-               categoria = snapshot.data!.docs.elementAt(index).get("categoria");
-               tiempo = snapshot.data!.docs.elementAt(index).get("tiempo");
-               estrellas = snapshot.data!.docs.elementAt(index).get("Calficacion");
-               logo = snapshot.data!.docs.elementAt(index).get("logo");
-              return Column(
-                children: [
-                  _crearTargeta(imagen,categoria,tiempo,estrellas, logo),
-                  SizedBox(height: 15.0),
-                ],
+    String imagen = '', categoria = '', tiempo = '', estrellas = '', logo = '';
+    return Scaffold(
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(120.0),
+          child: AppBar(
+            automaticallyImplyLeading: false,
+            flexibleSpace: Column(
+              children: <Widget>[
+                const SizedBox(height: 30.0),
+                Flexible(
+                  //aqui esta el error
+                  child: FittedBox(
+                    fit: BoxFit.fill, // otherwise the logo will be tiny
+                    child: ImagenLogo(),
+                  ),
+                ),
+                Container(
+                  child: TextoAppBar(),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 10.0, vertical: 5.0),
+                ),
+              ],
+            ),
+          ),
+        ),
+        body: Center(
+          child: StreamBuilder(
+            stream:
+                FirebaseFirestore.instance.collection('usuarios').snapshots(),
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (!snapshot.hasData) {
+                return const Center(
+                  child:
+                      CircularProgressIndicator(), //aqui puede ir un indicador de cargo
+                );
+              }
+              return ListView.builder(
+                //retornamos las listas existente
+                //shrinkWrap: true,
+                padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
+                itemCount: snapshot.data!.docs
+                    .length, //cantidad de elementos que se encuentran en la base de datos
+                itemBuilder: (BuildContext context, int index) {
+                  //inndex cambiar por doc de snapshot
+                  imagen = snapshot.data!.docs.elementAt(index).get("name");
+                  categoria =
+                      snapshot.data!.docs.elementAt(index).get("categoria");
+                  tiempo = snapshot.data!.docs.elementAt(index).get("tiempo");
+                  estrellas =
+                      snapshot.data!.docs.elementAt(index).get("Calficacion");
+                  logo = snapshot.data!.docs.elementAt(index).get("logo");
+                  return Column(
+                    children: [
+                      _crearTargeta(imagen, categoria, tiempo, estrellas, logo),
+                      const SizedBox(height: 15.0),
+                    ],
+                  );
+                  //return _crearTargeta(snapshot.data!.doc("name").get().toString());//modificar para mandar parametros
+                },
               );
-              //return _crearTargeta(snapshot.data!.doc("name").get().toString());//modificar para mandar parametros
             },
-          );
-        },
-      ),
-    );
+          ),
+        ));
   }
 
   Widget _crearBottomNavigator() {
@@ -211,15 +219,15 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
     //crea la vista de cada boton del menu.
     List<Widget> _widgetOptions = <Widget>[
       _crearListaTarjetas2(),
-      Text(
+      const Text(
         'Prueba cambio',
         style: optionStyle,
       ),
-      Text(
+      const Text(
         'Index 2: Pedidos',
         style: optionStyle,
       ),
-      _vistaCuentaUsuario(context),
+      const PerfilScreen(),
     ];
     return _widgetOptions.elementAt(_selectedIndex);
   }
@@ -232,12 +240,13 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
 
   Widget _vistaCuentaUsuario(BuildContext context) {
     //mandarDataTarjetas();
-    return Center(
+    return //Navigator.of(context).pushNamed('/ContrasenaScreen')as Widget;
+        Center(
       child: ElevatedButton(
         onPressed: () {
           context.read<AuthentificationFirebase>().singOut();
         },
-        child: Text('Cerrar Sesion'),
+        child: const Text('Cerrar Sesion'),
       ),
     );
   }
@@ -372,29 +381,28 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
 //     return "vacio";
 // }
 
-
 // Widget _crearTargetas(){//se encarga de colocar targetas en un listview
-  //   return ListView(
-  //     padding: EdgeInsets.all(10.0), //espacio en los lados de cada widget
-  //     children: <Widget>[
-  //       SizedBox(height: 15.0),
-  //       _obtenerUbicacion(),
-  //       SizedBox(height: 15.0),
-  //       _crearTargeta(),
-  //       SizedBox(height: 30.0),
-  //       _crearTargeta(),
-  //       SizedBox(height: 30.0),
-  //       _crearTargeta(),
-  //       SizedBox(height: 30.0),
-  //       _crearTargeta(),
-  //       SizedBox(height: 30.0),
-  //       _crearTargeta(),
-  //       SizedBox(height: 30.0),
-  //       //quitar es de prueba para subir datos a base
-  //       ElevatedButton(
-  //         onPressed: mandarDataTarjetas,
-  //         child: Text('subir info'),
-  //         ),
-  //     ],
-  //   );
-  // }
+//   return ListView(
+//     padding: EdgeInsets.all(10.0), //espacio en los lados de cada widget
+//     children: <Widget>[
+//       SizedBox(height: 15.0),
+//       _obtenerUbicacion(),
+//       SizedBox(height: 15.0),
+//       _crearTargeta(),
+//       SizedBox(height: 30.0),
+//       _crearTargeta(),
+//       SizedBox(height: 30.0),
+//       _crearTargeta(),
+//       SizedBox(height: 30.0),
+//       _crearTargeta(),
+//       SizedBox(height: 30.0),
+//       _crearTargeta(),
+//       SizedBox(height: 30.0),
+//       //quitar es de prueba para subir datos a base
+//       ElevatedButton(
+//         onPressed: mandarDataTarjetas,
+//         child: Text('subir info'),
+//         ),
+//     ],
+//   );
+// }

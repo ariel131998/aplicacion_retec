@@ -17,13 +17,12 @@ class _RegistroClientePageState extends State<RegistroClientePage> {
   late String _card;
   late String _date;
   late String _ccv;
-  
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       //resizeToAvoidBottomInset: false,
-      appBar: AppBar(title: Text('Registro'), centerTitle: true),
+      appBar: AppBar(title: const Text('Registro'), centerTitle: true),
       body: Form(
         key: _formKey,
         child: Padding(
@@ -46,7 +45,7 @@ class _RegistroClientePageState extends State<RegistroClientePage> {
                   }
                   return null;
                 },
-                onSaved:(val) => _name = val!,
+                onSaved: (val) => _name = val!,
               ),
               SizedBox(height: boxHeight),
               TextFormField(
@@ -63,7 +62,7 @@ class _RegistroClientePageState extends State<RegistroClientePage> {
                   }
                   return null;
                 },
-                onSaved:(val) => _phone = val!,
+                onSaved: (val) => _phone = val!,
               ),
               SizedBox(height: boxHeight),
               TextFormField(
@@ -76,12 +75,14 @@ class _RegistroClientePageState extends State<RegistroClientePage> {
                     labelText: 'Dirección',
                     hintText: 'Dirección'),
                 validator: (String? direccion) {
-                  if (direccion == null || direccion.isEmpty || direccion.length < 20) {
+                  if (direccion == null ||
+                      direccion.isEmpty ||
+                      direccion.length < 20) {
                     return 'Por favor, ingrese una dirección válida';
                   }
                   return null;
                 },
-                onSaved:(val) => _address = val!,
+                onSaved: (val) => _address = val!,
               ),
               SizedBox(height: boxHeight),
               TextFormField(
@@ -93,12 +94,14 @@ class _RegistroClientePageState extends State<RegistroClientePage> {
                     labelText: 'Tarjeta',
                     hintText: 'Tarjeta'),
                 validator: (String? tarjeta) {
-                  if (tarjeta == null || tarjeta.isEmpty || (tarjeta.length != 16 && tarjeta.length != 19)) {
+                  if (tarjeta == null ||
+                      tarjeta.isEmpty ||
+                      (tarjeta.length != 16 && tarjeta.length != 19)) {
                     return 'Por favor, ingrese un número de tarjeta válido';
                   }
                   return null;
                 },
-                onSaved:(val) => _card = val!,
+                onSaved: (val) => _card = val!,
               ),
               Padding(
                 padding: const EdgeInsets.all(20.0),
@@ -114,14 +117,16 @@ class _RegistroClientePageState extends State<RegistroClientePage> {
                             labelText: 'Fecha',
                             hintText: 'Fecha'),
                         validator: (String? date) {
-                          if (date == null || date.isEmpty || date.length != 5) {
+                          if (date == null ||
+                              date.isEmpty ||
+                              date.length != 5) {
                             return 'Fecha inválida';
                           }
                           return null;
                         },
                       ),
                     ),
-                    Spacer(),
+                    const Spacer(),
                     Expanded(
                       child: TextFormField(
                         keyboardType: TextInputType.number,
@@ -134,12 +139,11 @@ class _RegistroClientePageState extends State<RegistroClientePage> {
                         validator: (String? ccv) {
                           if (ccv == null || ccv.isEmpty || ccv.length != 3) {
                             return 'Inválido';
-                          }else{
-                            
+                          } else {
                             return null;
                           }
                         },
-                        onSaved:(val) => _ccv = val!,
+                        onSaved: (val) => _ccv = val!,
                       ),
                     ),
                   ],
@@ -147,7 +151,7 @@ class _RegistroClientePageState extends State<RegistroClientePage> {
               ),
               Row(
                 children: [
-                  Spacer(),
+                  const Spacer(),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
                     child: ElevatedButton(
@@ -159,11 +163,11 @@ class _RegistroClientePageState extends State<RegistroClientePage> {
                             _formKey.currentState!.save();
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content:  Column(
+                                content: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    const Text( "Validando "),
-                                    Text( _name)
+                                    const Text("Validando "),
+                                    Text(_name)
                                   ],
                                 ),
                                 duration: const Duration(seconds: 1),

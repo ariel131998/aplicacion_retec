@@ -8,6 +8,8 @@ import 'package:provider/provider.dart'; //(firebase)
 class PruebaRegistroUsuario extends StatelessWidget {
   final passwordController = TextEditingController();
   final emailController = TextEditingController();
+
+  PruebaRegistroUsuario({Key? key}) : super(key: key);
   //static String id = 'login_page '; // ver si me va a servir
 
   //inicializacion firebase
@@ -42,11 +44,11 @@ class PruebaRegistroUsuario extends StatelessWidget {
               ),
             ]),
           ),
-          SizedBox(height: 15.0),
+          const SizedBox(height: 15.0),
           userTextField(),
-          SizedBox(height: 20.0),
+          const SizedBox(height: 20.0),
           passwordTextField(),
-          SizedBox(height: 15.0),
+          const SizedBox(height: 15.0),
           _bottonLogin(),
           //SizedBox(height: 15.0),
           //_TextRecuperarCont(),
@@ -59,11 +61,11 @@ class PruebaRegistroUsuario extends StatelessWidget {
     return StreamBuilder(
         builder: (BuildContext context, AsyncSnapshot snapshot) {
       return Container(
-        padding: EdgeInsets.symmetric(horizontal: 20.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: TextField(
           controller: emailController,
           keyboardType: TextInputType.emailAddress,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             icon: Icon(Icons.email),
             hintText: 'ejemplo@correo.com',
             labelText: 'Correo electronico',
@@ -81,12 +83,12 @@ class PruebaRegistroUsuario extends StatelessWidget {
     return StreamBuilder(
         builder: (BuildContext context, AsyncSnapshot snapshot) {
       return Container(
-        padding: EdgeInsets.symmetric(horizontal: 20.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: TextField(
           controller: passwordController,
           keyboardType: TextInputType.emailAddress,
           obscureText: true,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             icon: Icon(Icons.lock),
             hintText: 'Contraseña',
             labelText: 'Contraseña',
@@ -113,8 +115,8 @@ class PruebaRegistroUsuario extends StatelessWidget {
           //Navigator.of(context).pushNamed('/ClienteScreen2');
         },
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
-          child: Text(
+          padding: const EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
+          child: const Text(
             'Registrar',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0),
           ),

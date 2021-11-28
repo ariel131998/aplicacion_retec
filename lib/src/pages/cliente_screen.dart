@@ -5,46 +5,25 @@ class ClienteScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-<<<<<<< HEAD
-      /*appBar: AppBar(
-        title: const Text('Pantalla Cliente'),
-      ),*/
-      body: Center(
-          child: Column(
-        children: [
-          Flexible(
-            child: Image.asset(
-              'assets/fondo_login.jpg',
-              height: 350.0,
-            ),
-          ),
-          const SizedBox(height: 15.0),
-          _bottonPerfil(),
-          const SizedBox(height: 20.0),
-          _bottonContrasena(),
-          const SizedBox(height: 20.0),
-          _bottonCobro(),
-        ],
-      )),
-=======
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(120.0),
+        preferredSize: const Size.fromHeight(120.0),
         child: AppBar(
           automaticallyImplyLeading: false,
           flexibleSpace: Column(
             children: <Widget>[
-              SizedBox(height: 22.0),
+              const SizedBox(height: 22.0),
               Flexible(
                 child: FittedBox(
                   fit: BoxFit.contain, // otherwise the logo will be tiny
                   child: ImagenLogo(),
-                ), 
-              ), 
+                ),
+              ),
               Container(
                 child: TextoAppBar(),
-                padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
               ),
-            ],   
+            ],
           ),
         ),
       ),
@@ -65,17 +44,15 @@ class ClienteScreen extends StatelessWidget {
 
   Widget TextoAppBar() {
     return StreamBuilder(
-      builder: (BuildContext context, AsyncSnapshot stapshot){
-        return Text(
-          'Encuentra al personal necesario para tu problema', 
-          style: TextStyle(
-          color: Colors.white, 
-          fontSize: 19.0,     
-          ),   
-        );
-      }
->>>>>>> main
-    );
+        builder: (BuildContext context, AsyncSnapshot stapshot) {
+      return const Text(
+        'Encuentra al personal necesario para tu problema',
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 19.0,
+        ),
+      );
+    });
   }
 
   // ignore: unused_element

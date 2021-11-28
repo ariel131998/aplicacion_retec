@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_retec/authentification/authentification_firebase.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/src/provider.dart';
 
 class PerfilScreen extends StatefulWidget {
   const PerfilScreen({Key? key}) : super(key: key);
@@ -21,6 +23,12 @@ class _PerfilScreenState extends State<PerfilScreen> {
           centerTitle: true,
           title: const Text('Perfil'),
           automaticallyImplyLeading: false,
+          actions: [
+            IconButton(
+                onPressed: () =>
+                    context.read<AuthentificationFirebase>().singOut(),
+                icon: const Icon(Icons.logout_rounded))
+          ],
         ),
         body: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 20.0),

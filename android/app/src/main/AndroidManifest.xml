@@ -3,16 +3,11 @@
    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
    <application
         android:label="flutter_retec"
-<<<<<<< HEAD
         android:icon="@mipmap/ic_launcher">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBagPR1ghkqYPEfBpcl3K3Z3okjoO1_ysw" 
         />
-        
-=======
-        android:icon="@mipmap/ic_launcher"> 
->>>>>>> main
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

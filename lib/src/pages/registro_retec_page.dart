@@ -27,11 +27,11 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       //resizeToAvoidBottomInset: false,
-      appBar: AppBar(title: Text('Registro'), centerTitle: true),
+      appBar: AppBar(title: const Text('Registro'), centerTitle: true),
       body: Form(
         key: _formKey,
         child: ListView(
-          padding: EdgeInsets.only(
+          padding: const EdgeInsets.only(
             top: 30.0,
             left: 30.0,
             right: 30.0,
@@ -93,12 +93,12 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
               onSaved: (val) => _address = val!,
             ),
             Container(
-              padding: EdgeInsets.only(
+              padding: const EdgeInsets.only(
                 top: 10.0,
               ),
               height: 200,
               child: ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 scrollDirection: Axis.vertical,
                 itemCount: 1,
                 itemBuilder: (context, index) {
@@ -107,11 +107,11 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
                     child: Column(
                       children: values.keys.map((String key) {
                         return CheckboxListTile(
-                          contentPadding: EdgeInsets.all(0.0),
-                          activeColor: Color.fromRGBO(242,210,114, 2.0),
+                          contentPadding: const EdgeInsets.all(0.0),
+                          activeColor: const Color.fromRGBO(242, 210, 114, 2.0),
                           title: Text(key),
                           value: values[key],
-                          onChanged: ( value) {
+                          onChanged: (value) {
                             setState(() {
                               values[key] = value!;
                             });
@@ -162,7 +162,7 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
                       },
                     ),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Expanded(
                     child: TextFormField(
                       keyboardType: TextInputType.number,
@@ -219,10 +219,10 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8.0),
         child: Row(
           children: [
-            Spacer(),
+            const Spacer(),
             ElevatedButton(
                 onPressed: () {
                   // Validate will return true if the form is valid, or false if
@@ -233,9 +233,8 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: _listaSeleccion()
-                        ),
+                            mainAxisSize: MainAxisSize.min,
+                            children: _listaSeleccion()),
                         duration: const Duration(seconds: 1),
                       ),
                     );
@@ -252,11 +251,10 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
   List<Widget> _listaSeleccion() {
     List<Widget> lista = [];
     values.keys.map((String key) {
-      if(values[key]==true){
+      if (values[key] == true) {
         final tempWidget = ListTile(
           title: Text(key),
         );
-
 
         lista.add(tempWidget);
       }

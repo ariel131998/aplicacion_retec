@@ -9,6 +9,8 @@ import 'package:provider/provider.dart';
 class LoginScreen extends StatelessWidget {
   final passwordController = TextEditingController();
   final emailController = TextEditingController();
+
+  LoginScreen({Key? key}) : super(key: key);
   //static String id = 'login_page '; // ver si me va a servir
   @override
   Widget build(BuildContext context) {
@@ -21,28 +23,29 @@ class LoginScreen extends StatelessWidget {
       body: Center(
           child: Column(
         children: [
-          Flexible(// o cambiar por container para evitar que se haga chico
-            child: Stack(children: <Widget>[//permite widgets encimados
+          Flexible(
+            // o cambiar por container para evitar que se haga chico
+            child: Stack(children: <Widget>[
+              //permite widgets encimados
               Image.asset(
                 'assets/fondo_login.jpg',
                 //height: 350.0,
                 //alignment: Alignment.center,
-                width: 550.0,//evita que se haga mas chica la imagen al ser flexible
-                
+                width:
+                    550.0, //evita que se haga mas chica la imagen al ser flexible
               ),
               Image.asset(
-                  'assets/Retec_Blanco_bordes.png',
-                  height: 350.0,
-                  //width: 450,
-                  
+                'assets/Retec_Blanco_bordes.png',
+                height: 350.0,
+                //width: 450,
               ),
             ]),
           ),
-          SizedBox(height: 15.0),
+          const SizedBox(height: 15.0),
           userTextField(),
-          SizedBox(height: 20.0),
+          const SizedBox(height: 20.0),
           passwordTextField(),
-          SizedBox(height: 15.0),
+          const SizedBox(height: 15.0),
           _bottonLogin(),
           const SizedBox(height: 15.0),
           _buttonRegistro(),
@@ -107,13 +110,12 @@ class LoginScreen extends StatelessWidget {
         onPressed: () {
           //Navigator.of(context).pushNamed('/ClienteScreen2');
           //String mostrarError = context.read<AuthentificationFirebase>().errores.errorLogIn;
-          //String error; 
+          //String error;
 
           context.read<AuthentificationFirebase>().signIn(
-            email: emailController.text.trim(),
-            password: passwordController.text.trim(),
-          );
-
+                email: emailController.text.trim(),
+                password: passwordController.text.trim(),
+              );
 
           //error = context.read<AuthentificationFirebase>().errores.errorLogIn2;
           //print('error2: $mostrarError');//ya tengo el error, solo falta saber cuando ya hay error.
@@ -128,8 +130,8 @@ class LoginScreen extends StatelessWidget {
           //Navigator.of(context).pushNamed('/LoginScreen');
         },
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
-          child: Text(
+          padding: const EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
+          child: const Text(
             'Iniciar Sesion',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0),
           ),
@@ -147,21 +149,20 @@ class LoginScreen extends StatelessWidget {
         onPressed: () {
           Navigator.of(context).pushNamed('/RecuperarContrasena');
         },
-        child: Text('Recuperar contraseña'),
+        child: const Text('Recuperar contraseña'),
       );
     });
   }
+
   Widget _buttonRegistro() {
     return StreamBuilder(
-      builder: (BuildContext context, AsyncSnapshot snapshot){
-        return TextButton(
-          onPressed: (){
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+      return TextButton(
+          onPressed: () {
             Navigator.pushNamed(context, '/BienvenidaPage');
-          }, 
-          child: Text('Registrarse')
-        );
-      }
-    );
+          },
+          child: const Text('Registrarse'));
+    });
   }
   // Widget _RegistrarUser() {
   //   return StreamBuilder(
@@ -175,14 +176,9 @@ class LoginScreen extends StatelessWidget {
   //   });
   // }
 }
-<<<<<<< HEAD
-=======
-
-
 
 //falta agregar boton ver contrasena y logotipo encima de la foto.
 // onPressed: () {
 //             Navigator.of(context).pushNamed('/ClienteScreen');
 
 //todavia falta checar que hacer cuando se quiera iniciar sesion y a donde mandar.
->>>>>>> main

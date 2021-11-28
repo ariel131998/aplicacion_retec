@@ -47,11 +47,7 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.example.flutter_retec"
-<<<<<<< HEAD
         minSdkVersion 21
-=======
-        minSdkVersion 21 //tenia 16 y lo voy a subir a 19
->>>>>>> main
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
