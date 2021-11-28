@@ -42,6 +42,31 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
     numTarjeta = 0;
     //colocarNombreDataTarjetas();//checar si aqui funciona puede dar error.
     return Scaffold(
+<<<<<<< HEAD
+=======
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(120.0),
+        child: AppBar(
+          automaticallyImplyLeading: false,
+          flexibleSpace: Column(
+            children: <Widget>[
+              SizedBox(height: 30.0),
+              Flexible(
+                //aqui esta el error
+                child: FittedBox(
+                  fit: BoxFit.fill, // otherwise the logo will be tiny
+                  child: ImagenLogo(),
+                ),
+              ),
+              Container(
+                child: TextoAppBar(),
+                padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+              ),
+            ],
+          ),
+        ),
+      ),
+>>>>>>> main
       body: Center(
         //child: _widgetOptions.elementAt(_selectedIndex),
         child: _crearVistasMenu(_selectedIndex, context),
@@ -104,8 +129,15 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
             children: <Widget>[
               Text(tiempo),
               TextButton(
+<<<<<<< HEAD
                 onPressed: () {},
                 child: const Text('Contratar'),
+=======
+                onPressed: () {
+                  _contratarServicio(name, context, logo);
+                },
+                child: Text('Contratar'),
+>>>>>>> main
               ),
               const Icon(Icons.star_outline_sharp),
               Text(estrellas),
@@ -117,8 +149,43 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
     );
   }
 
+  void _contratarServicio(String name, BuildContext context, String logo) {
+    double costo = 0;
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+          title: Text('Contratar servicios de: $name'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text("El costo del servicio sera de: $costo"),
+              SizedBox(height: 15.0),
+              Image.network(logo, width: 100),
+            ]
+          ),
+          actions: <Widget>[
+            ElevatedButton(
+              onPressed: () {
+                //mandar info a tabla de pedidos
+              }, 
+              child: Text('Confirmar')
+            ),
+            ElevatedButton(
+              onPressed: ()=> Navigator.of(context).pop(), 
+              child: Text('Cancelar')
+            ),
+            ],
+        );
+      },
+    );
+  }
+
   Widget _crearListaTarjetas2() {
     String imagen = '', categoria = '', tiempo = '', estrellas = '', logo = '';
+<<<<<<< HEAD
     return Scaffold(
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(120.0),
@@ -178,6 +245,37 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
                   );
                   //return _crearTargeta(snapshot.data!.doc("name").get().toString());//modificar para mandar parametros
                 },
+=======
+    return Center(
+      child: StreamBuilder(
+        stream: FirebaseFirestore.instance.collection('usuarios').snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData) {
+            return Center(
+              child:
+                  Text('No hay info aun'), //aqui puede ir un indicador de cargo
+            );
+          }
+          return ListView.builder(
+            //retornamos las listas existente
+            //shrinkWrap: true,
+            padding: EdgeInsets.only(left: 10, right: 10, top: 10),
+            itemCount: snapshot.data!.docs
+                .length, //cantidad de elementos que se encuentran en la base de datos
+            itemBuilder: (BuildContext context, int index) {
+              //inndex cambiar por doc de snapshot
+              imagen = snapshot.data!.docs.elementAt(index).get("name");
+              categoria = snapshot.data!.docs.elementAt(index).get("categoria");
+              tiempo = snapshot.data!.docs.elementAt(index).get("tiempo");
+              estrellas =
+                  snapshot.data!.docs.elementAt(index).get("Calficacion");
+              logo = snapshot.data!.docs.elementAt(index).get("logo");
+              return Column(
+                children: [
+                  _crearTargeta(imagen, categoria, tiempo, estrellas, logo),
+                  SizedBox(height: 15.0),
+                ],
+>>>>>>> main
               );
             },
           ),
