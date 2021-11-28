@@ -48,8 +48,9 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
           flexibleSpace: Column(
             children: <Widget>[
               SizedBox(height: 30.0),
-              Flexible(//aqui esta el error
-                child: FittedBox(    
+              Flexible(
+                //aqui esta el error
+                child: FittedBox(
                   fit: BoxFit.fill, // otherwise the logo will be tiny
                   child: ImagenLogo(),
                 ),
@@ -71,17 +72,17 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
   }
 
   Widget ImagenLogo() {
-   // return StreamBuilder(
-       // builder: (BuildContext context, AsyncSnapshot snapshot) {
-      return Container(
-        height: 150,
-        width: 350,
-        child: Image.asset(
-          'assets/Retec_Blanco_bordes.png',
-          //height: 80.0,
-          //alignment: Alignment.topLeft,
-        ),
-      );
+    // return StreamBuilder(
+    // builder: (BuildContext context, AsyncSnapshot snapshot) {
+    return Container(
+      height: 150,
+      width: 350,
+      child: Image.asset(
+        'assets/Retec_Blanco_bordes.png',
+        //height: 80.0,
+        //alignment: Alignment.topLeft,
+      ),
+    );
     //});
   }
 
@@ -98,7 +99,8 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
     });
   }
 
-  Widget _crearTargeta(String name, String categoria, String tiempo, String estrellas, String logo) {
+  Widget _crearTargeta(String name, String categoria, String tiempo,
+      String estrellas, String logo) {
     return Card(
       elevation: 10.0,
       shape: RoundedRectangleBorder(
@@ -112,8 +114,7 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
             leading: FadeInImage(
               placeholder: AssetImage('assets/jar-loading.gif'),
               image: NetworkImage(
-                  logo,
-                  
+                logo,
               ), //falta cambir por varios.
             ),
             title: Text(name), //aqui hacer que vaya cambiando
@@ -124,7 +125,9 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
             children: <Widget>[
               Text(tiempo),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  _contratarServicio(name, context, logo);
+                },
                 child: Text('Contratar'),
               ),
               Icon(Icons.star_outline_sharp),
@@ -137,8 +140,42 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
     );
   }
 
+  void _contratarServicio(String name, BuildContext context, String logo) {
+    double costo = 0;
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+          title: Text('Contratar servicios de: $name'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text("El costo del servicio sera de: $costo"),
+              SizedBox(height: 15.0),
+              Image.network(logo, width: 100),
+            ]
+          ),
+          actions: <Widget>[
+            ElevatedButton(
+              onPressed: () {
+                //mandar info a tabla de pedidos
+              }, 
+              child: Text('Confirmar')
+            ),
+            ElevatedButton(
+              onPressed: ()=> Navigator.of(context).pop(), 
+              child: Text('Cancelar')
+            ),
+            ],
+        );
+      },
+    );
+  }
+
   Widget _crearListaTarjetas2() {
-    String imagen='', categoria='', tiempo='',estrellas='', logo='';
+    String imagen = '', categoria = '', tiempo = '', estrellas = '', logo = '';
     return Center(
       child: StreamBuilder(
         stream: FirebaseFirestore.instance.collection('usuarios').snapshots(),
@@ -157,14 +194,15 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
                 .length, //cantidad de elementos que se encuentran en la base de datos
             itemBuilder: (BuildContext context, int index) {
               //inndex cambiar por doc de snapshot
-               imagen = snapshot.data!.docs.elementAt(index).get("name");
-               categoria = snapshot.data!.docs.elementAt(index).get("categoria");
-               tiempo = snapshot.data!.docs.elementAt(index).get("tiempo");
-               estrellas = snapshot.data!.docs.elementAt(index).get("Calficacion");
-               logo = snapshot.data!.docs.elementAt(index).get("logo");
+              imagen = snapshot.data!.docs.elementAt(index).get("name");
+              categoria = snapshot.data!.docs.elementAt(index).get("categoria");
+              tiempo = snapshot.data!.docs.elementAt(index).get("tiempo");
+              estrellas =
+                  snapshot.data!.docs.elementAt(index).get("Calficacion");
+              logo = snapshot.data!.docs.elementAt(index).get("logo");
               return Column(
                 children: [
-                  _crearTargeta(imagen,categoria,tiempo,estrellas, logo),
+                  _crearTargeta(imagen, categoria, tiempo, estrellas, logo),
                   SizedBox(height: 15.0),
                 ],
               );
