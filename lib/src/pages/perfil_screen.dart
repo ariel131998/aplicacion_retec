@@ -235,7 +235,8 @@ class _PerfilScreenState extends State<PerfilScreen> {
 
   Widget _cambiarContrasena(BuildContext context) {
     return TextButton(
-        onPressed: () => Navigator.of(context).pushNamed('/ContrasenaScreen'),
+        onPressed:
+            () {}, //=> Navigator.of(context).pushNamed('/ContrasenaScreen'),
         child: const Text('Cambiar contraseña'));
   }
 }

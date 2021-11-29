@@ -20,7 +20,6 @@ class _PagoScreenState extends State<PagoScreen> {
   late GoogleMapController mapController;
   String _currentAddress = '';
   final startAddressController = TextEditingController();
-  String _startAddress = '';
   final LatLng _center = const LatLng(45.521563, -122.677433);
 
   final List<String> _opciones = ['Albañileria', 'Electricista', 'Plomeria'];
@@ -31,12 +30,22 @@ class _PagoScreenState extends State<PagoScreen> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    _getCurrentLocation();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Servicio'),
-        automaticallyImplyLeading: false,
       ),
       body: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 20.0),
@@ -198,36 +207,52 @@ class _PagoScreenState extends State<PagoScreen> {
 
   Widget _direccionServicio(BuildContext context) {
     return Column(
-      children: <Widget>[
-        Container(
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
-            padding: const EdgeInsets.all(10),
-            height: 250.0,
-            width: 400.0,
-            child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(30),
-                  topRight: Radius.circular(30),
-                  bottomRight: Radius.circular(30),
-                  bottomLeft: Radius.circular(30),
+      children: [
+        Stack(children: [
+          Container(
+              decoration:
+                  BoxDecoration(borderRadius: BorderRadius.circular(20)),
+              padding: const EdgeInsets.all(10),
+              height: 250.0,
+              width: 400.0,
+              child: ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                    bottomRight: Radius.circular(30),
+                    bottomLeft: Radius.circular(30),
+                  ),
+                  child: Align(
+                      alignment: Alignment.bottomRight,
+                      heightFactor: 0.3,
+                      widthFactor: 2.5,
+                      child: GoogleMap(
+                          myLocationEnabled: true,
+                          myLocationButtonEnabled: false,
+                          mapType: MapType.normal,
+                          zoomGesturesEnabled: true,
+                          zoomControlsEnabled: true,
+                          onMapCreated: (GoogleMapController controller) {
+                            mapController = controller;
+                          },
+                          initialCameraPosition: CameraPosition(
+                            target: _center,
+                            zoom: 11.0,
+                          ))))),
+          Positioned(
+              child: FloatingActionButton(
+                backgroundColor: Colors.white54,
+                onPressed: _getCurrentLocation,
+                child: Icon(
+                  Icons.location_on,
+                  color: Colors.amber[700],
                 ),
-                child: Align(
-                    alignment: Alignment.bottomRight,
-                    heightFactor: 0.3,
-                    widthFactor: 2.5,
-                    child: GoogleMap(
-                        myLocationEnabled: true,
-                        myLocationButtonEnabled: true,
-                        mapType: MapType.normal,
-                        zoomGesturesEnabled: true,
-                        zoomControlsEnabled: true,
-                        onMapCreated: (GoogleMapController controller) {
-                          mapController = controller;
-                        },
-                        initialCameraPosition: CameraPosition(
-                          target: _center,
-                          zoom: 11.0,
-                        ))))),
+              ),
+              bottom: 180,
+              right: 18),
+        ]),
+        const SizedBox(height: 5.0),
+        Text(_currentAddress, textAlign: TextAlign.center)
       ],
     );
   }
@@ -239,6 +264,7 @@ class _PagoScreenState extends State<PagoScreen> {
         // Store the position in the variable
         _currentPosition = position;
 
+        // ignore: avoid_print
         print('CURRENT POS: $_currentPosition');
 
         // For moving the camera to current location
@@ -246,21 +272,16 @@ class _PagoScreenState extends State<PagoScreen> {
           CameraUpdate.newCameraPosition(
             CameraPosition(
               target: LatLng(position.latitude, position.longitude),
-              zoom: 18.0,
+              zoom: 15.0,
             ),
           ),
         );
       });
       await _getAddress();
     }).catchError((e) {
+      // ignore: avoid_print
       print(e);
     });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _getCurrentLocation();
   }
 
   _getAddress() async {
@@ -274,9 +295,11 @@ class _PagoScreenState extends State<PagoScreen> {
         _currentAddress =
             "${place.name}, ${place.locality}, ${place.postalCode}, ${place.country}";
         startAddressController.text = _currentAddress;
-        _startAddress = _currentAddress;
+        // ignore: avoid_print
+        print('Dirección: $_currentAddress');
       });
     } catch (e) {
+      // ignore: avoid_print
       print(e);
     }
   }
