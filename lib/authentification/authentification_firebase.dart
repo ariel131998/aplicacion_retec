@@ -69,6 +69,11 @@ class AuthentificationFirebase {
       return e.message.toString();
     }
   }
+  String obtenerUsuario(){
+    String usuarioActual = '';
+      usuarioActual = _firebaseAuth.currentUser!.email.toString();
+      return usuarioActual;
+  }
 }
 
 

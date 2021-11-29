@@ -2,6 +2,7 @@
 
 //import 'dart:html';
 
+//import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_retec/authentification/authentification_firebase.dart';
@@ -21,11 +22,11 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
   //variables que se van a ir actualizando al ir creando las tarjetas.
   int numTarjeta = 0;
   //Map<String, String> usuarioTarjetaDatos= {"nombre": "", "categoria": "", "logo":"", "tiempo":"", "calificacion":""};
-  List<String> mapaUsuarios = [];
-  List<String> mapaCategoria = [];
-  List<String> mapaLogo = [];
-  List<String> mapaTiempo = [];
-  List<String> mapaCalificacion = [];
+  // List<String> mapaUsuarios = [];
+  // List<String> mapaCategoria = [];
+  // List<String> mapaLogo = [];
+  // List<String> mapaTiempo = [];
+  // List<String> mapaCalificacion = [];
 
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
@@ -104,12 +105,10 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
             children: <Widget>[
               Text(tiempo),
               TextButton(
-                onPressed: () => Navigator.of(context).pushNamed('/PagoScreen'),
-                child: const Text('Contratar'),
-                /*onPressed: () {
-                  _contratarServicio(name, context, logo);
+                onPressed: () {
+                  _contratarServicio(name, context, logo, categoria);
                 },
-                child: Text('Contratar'),*/
+                child: Text('Contratar'),
               ),
               const Icon(Icons.star_outline_sharp),
               Text(estrellas),
@@ -121,8 +120,8 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
     );
   }
 
-  void _contratarServicio(String name, BuildContext context, String logo) {
-    double costo = 0;
+  void _contratarServicio(String name, BuildContext context, String logo, String categoria) {
+    double costo = 100;
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -138,10 +137,12 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
           ]),
           actions: <Widget>[
             ElevatedButton(
-                onPressed: () {
-                  //mandar info a tabla de pedidos
-                },
-                child: const Text('Confirmar')),
+              onPressed: () {
+                Navigator.of(context).pushNamed('/PagoScreen');
+                //_crearPedido(name,costo,categoria); //checar donde mandar a crear pedido a base de datos
+              }, 
+              child: Text('Confirmar')
+            ),
             ElevatedButton(
                 onPressed: () => Navigator.of(context).pop(),
                 child: const Text('Cancelar')),
@@ -149,6 +150,27 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
         );
       },
     );
+  }
+  void _crearPedido(String name, double costo, String categoria) {
+    //obtener info del usuario de al autentificacion
+    //obtener info del retec de la tarjeta en la que estamos.
+    String usuario = context.read<AuthentificationFirebase>().obtenerUsuario();
+    //print(usuario);
+    //mandar info a firebase creando un nuevo pedido.
+    Map<String, dynamic> informacionPedido = {
+      "calificacion": 3, //falta capturar informacion del usuario logeado
+      "cliente": usuario,
+      "comentario": "Por modificar",
+      "costo": costo,
+      "reteccito": name, //liga de una imagen de los iconos de internet
+      "servicio": categoria,
+      "status": "en proceso"
+    };
+    //para mas facilidad a la hora de utilizar firebase podemos asignar lo siguiente
+    var db = FirebaseFirestore.instance;
+    CollectionReference collectionReference = db.collection('pedidos');
+    collectionReference.add(
+        informacionPedido);
   }
 
   Widget _crearListaTarjetas2() {
@@ -307,6 +329,7 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
     collectionReference.add(
         informacionUsuario); //se tendria que ir modificando la informacion del usuario.
   }
+
 }
 
 // collectionReference.snapshots().listen((snapshot) {
