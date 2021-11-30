@@ -38,6 +38,7 @@ class _PagoScreenState extends State<PagoScreen> {
   @override
   void dispose() {
     super.dispose();
+    mapController.dispose();
   }
 
   @override
