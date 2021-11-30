@@ -46,7 +46,7 @@ class _RegistroClientePageState extends State<RegistroClientePage> {
 
     return Scaffold(
       //resizeToAvoidBottomInset: false,
-      appBar: AppBar(title: Text('Registro'), centerTitle: true),
+      appBar: AppBar(title: const Text('Registro'), centerTitle: true),
       body: Form(
         key: _formKey,
         child: Padding(
@@ -151,7 +151,7 @@ class _RegistroClientePageState extends State<RegistroClientePage> {
                         onSaved: (val) => _cardDate = val!,
                       ),
                     ),
-                    Spacer(),
+                    const Spacer(),
                     Expanded(
                       child: TextFormField(
                         keyboardType: TextInputType.number,
@@ -176,7 +176,7 @@ class _RegistroClientePageState extends State<RegistroClientePage> {
               ),
               Row(
                 children: [
-                  Spacer(),
+                  const Spacer(),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
                     child: ElevatedButton(

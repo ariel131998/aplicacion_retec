@@ -7,21 +7,21 @@ class BienvenidaPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('¡Bienvenido a Retec!'),
+        title: const Text('¡Bienvenido a Retec!'),
       ),
-      backgroundColor: Color.fromRGBO(242,210,114, 2.0),
+      backgroundColor: const Color.fromRGBO(242, 210, 114, 2.0),
       body: ListView(
-        padding: EdgeInsets.all(30.0),
+        padding: const EdgeInsets.all(30.0),
         children: <Widget>[
           Container(
-            padding: EdgeInsets.all(10.0),
-            child: Text('Deseo...'),
+            padding: const EdgeInsets.all(10.0),
+            child: const Text('Deseo...'),
           ),
           _botonCliente(context),
           SizedBox(height: boxHeight),
           Container(
             alignment: Alignment.center,
-            child: Text('ó'),
+            child: const Text('ó'),
           ),
           SizedBox(height: boxHeight),
           _botonRetec(context),
@@ -35,9 +35,9 @@ class BienvenidaPage extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Container(
-              padding: EdgeInsets.all(10.0),
-              child: Text('Solicitar reparaciones o servicios')),
-          Image(
+              padding: const EdgeInsets.all(10.0),
+              child: const Text('Solicitar reparaciones o servicios')),
+          const Image(
             image: AssetImage('assets/cliente.png'),
             height: 200.0,
             fit: BoxFit.cover,
@@ -56,7 +56,7 @@ class BienvenidaPage extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30.0),
           color: Colors.white,
-          boxShadow: <BoxShadow>[
+          boxShadow: const <BoxShadow>[
             BoxShadow(
               color: Colors.black26,
               blurRadius: 10.0,
@@ -74,9 +74,9 @@ class BienvenidaPage extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Container(
-              padding: EdgeInsets.all(10.0),
-              child: Text('Brindar mis servicios')),
-          Image(
+              padding: const EdgeInsets.all(10.0),
+              child: const Text('Brindar mis servicios')),
+          const Image(
             image: AssetImage('assets/retec.png'),
             height: 200.0,
             fit: BoxFit.cover,
@@ -95,7 +95,7 @@ class BienvenidaPage extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30.0),
           color: Colors.white,
-          boxShadow: <BoxShadow>[
+          boxShadow: const <BoxShadow>[
             BoxShadow(
               color: Colors.black26,
               blurRadius: 10.0,
