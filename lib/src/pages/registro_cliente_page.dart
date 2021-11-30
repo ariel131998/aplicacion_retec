@@ -64,7 +64,7 @@ class _RegistroClientePageState extends State<RegistroClientePage> {
                     labelText: 'Nombre',
                     hintText: 'Nombre'),
                 validator: (String? name) {
-                  if (name == null || name.isEmpty || name.length < 20) {
+                  if (name == null || name.isEmpty || name.length < 15) {
                     return 'Por favor, ingrese un nombre válido';
                   }
                   return null;

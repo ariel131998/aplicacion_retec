@@ -25,6 +25,7 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
   late String _cardDate;
   late DateTime _registerDate;
   late String _ccv;
+  List<String> _jobs = [];
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +45,7 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
             'registro': _registerDate,
             'imagen': "",
             'tipo': "Reteccito",
-            'trabajos': "Pendiente"
+            'trabajos': _jobs
           })
           .then((value) => print("User Added"))
           .catchError((error) => print("Failed to add user: $error"));
@@ -73,7 +74,7 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
                   labelText: 'Nombre',
                   hintText: 'Nombre'),
               validator: (String? name) {
-                if (name == null || name.isEmpty || name.length < 20) {
+                if (name == null || name.isEmpty || name.length < 15) {
                   return 'Por favor, ingrese un nombre válido';
                 }
                 return null;
@@ -136,10 +137,19 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
                           activeColor: Color.fromRGBO(242, 210, 114, 2.0),
                           title: Text(key),
                           value: values[key],
-                          onChanged: (value) {
-                            setState(() {
-                              values[key] = value!;
-                            });
+                          onChanged: (bool? value) {
+                            if(value != null){
+                              setState(() {
+                                values[key] = value;
+                              });
+                              if(values[key]!){
+                                print("El checkbox "+key+" fue establecido como true");
+                                _jobs.add(key);
+                              }else{
+                                _jobs.remove(key);
+                              }
+                              print(_jobs);
+                            }
                           },
                         );
                       }).toList(),
@@ -257,6 +267,12 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
                     //Procesar la data
                     _formKey.currentState!.save();
                     _registerDate = DateTime.now();
+                    /*values.keys.map((String key) {
+                      if (values[key] == true) {
+                        print(key);
+                      }
+                    });*/
+
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Column(
