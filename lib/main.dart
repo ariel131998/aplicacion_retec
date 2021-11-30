@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(primarySwatch: Palette.kToDark),
+        theme: ThemeData(primarySwatch: Palette.kToDark, fontFamily: 'SegoeUi'),
         routes: getAplicationRoutes(),
         //initialRoute: '/LoginScreen',
         home:

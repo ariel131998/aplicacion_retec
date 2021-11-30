@@ -45,7 +45,7 @@ class _PagoScreenState extends State<PagoScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Servicio'),
+        title: const Text('Servicio', style: TextStyle(fontFamily: 'Myriadpro', fontWeight: FontWeight.w700),),
       ),
       body: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 20.0),

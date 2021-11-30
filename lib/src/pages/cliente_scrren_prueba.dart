@@ -6,6 +6,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_retec/authentification/authentification_firebase.dart';
+import 'package:flutter_retec/src/pages/buscar_screen.dart';
 import 'package:flutter_retec/src/pages/perfil_screen.dart';
 import 'package:flutter_retec/tema/palette.dart';
 
@@ -74,6 +75,8 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
         style: TextStyle(
           color: Colors.white,
           fontSize: 19.0,
+          fontFamily: 'Myriadpro',
+          fontWeight: FontWeight.w700
         ),
       );
     });
@@ -151,27 +154,28 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
       },
     );
   }
-  void _crearPedido(String name, double costo, String categoria) {
-    //obtener info del usuario de al autentificacion
-    //obtener info del retec de la tarjeta en la que estamos.
-    String usuario = context.read<AuthentificationFirebase>().obtenerUsuario();
-    //print(usuario);
-    //mandar info a firebase creando un nuevo pedido.
-    Map<String, dynamic> informacionPedido = {
-      "calificacion": 3, //falta capturar informacion del usuario logeado
-      "cliente": usuario,
-      "comentario": "Por modificar",
-      "costo": costo,
-      "reteccito": name, //liga de una imagen de los iconos de internet
-      "servicio": categoria,
-      "status": "en proceso"
-    };
-    //para mas facilidad a la hora de utilizar firebase podemos asignar lo siguiente
-    var db = FirebaseFirestore.instance;
-    CollectionReference collectionReference = db.collection('pedidos');
-    collectionReference.add(
-        informacionPedido);
-  }
+  //Ejemplo de como crear pedido en la base de datos.
+  // void _crearPedido(String name, double costo, String categoria) {
+  //   //obtener info del usuario de al autentificacion
+  //   //obtener info del retec de la tarjeta en la que estamos.
+  //   String usuario = context.read<AuthentificationFirebase>().obtenerUsuario();
+  //   //print(usuario);
+  //   //mandar info a firebase creando un nuevo pedido.
+  //   Map<String, dynamic> informacionPedido = {
+  //     "calificacion": 3, //falta capturar informacion del usuario logeado
+  //     "cliente": usuario,
+  //     "comentario": "Por modificar",
+  //     "costo": costo,
+  //     "reteccito": name, //liga de una imagen de los iconos de internet
+  //     "servicio": categoria,
+  //     "status": "en proceso"
+  //   };
+  //   //para mas facilidad a la hora de utilizar firebase podemos asignar lo siguiente
+  //   var db = FirebaseFirestore.instance;
+  //   CollectionReference collectionReference = db.collection('pedidos');
+  //   collectionReference.add(
+  //       informacionPedido);
+  // }
 
   Widget _crearListaTarjetas2() {
     String imagen = '', categoria = '', tiempo = '', estrellas = '', logo = '';
@@ -275,10 +279,11 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
     //crea la vista de cada boton del menu.
     List<Widget> _widgetOptions = <Widget>[
       _crearListaTarjetas2(),
-      const Text(
-        'Prueba cambio',
-        style: optionStyle,
-      ),
+      // const Text(
+      //   'Prueba cambio',
+      //   style: optionStyle,
+      // )
+      buscarScreen(),
       const Text(
         'Index 2: Pedidos',
         style: optionStyle,

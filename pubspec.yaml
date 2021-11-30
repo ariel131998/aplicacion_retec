@@ -97,7 +97,30 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: fonts/RobotoMono-VariableFont_wght.ttf
+        - asset: fonts/RobotoMono-Bold.ttf
+          weight: 700
+        - asset: fonts/RobotoMono-Medium.ttf 
+        - asset: fonts/RobotoMono-SemiBold.ttf
+        - asset: fonts/RobotoMono-italic.ttf
+          style: italic 
+    - family: Myriadpro
+      fonts:
+        - asset: fonts/MYRIADPRO-REGULAR.OTF
+        - asset: fonts/MYRIADPRO-BOLD.OTF
+          weight: 700
+        - asset: fonts/MyriadPro-Light.otf 
+        - asset: fonts/MYRIADPRO-SEMIBOLD.OTF
+    - family: SegoeUi
+      fonts:
+        - asset: fonts/Segoe UI.ttf
+        - asset: fonts/Segoe UI Bold.ttf
+          weight: 700
+        - asset: fonts/Segoe UI Italic.ttf
+          style: italic
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf

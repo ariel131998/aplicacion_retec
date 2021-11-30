@@ -21,7 +21,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text('Perfil'),
+          title: const Text('Perfil', style: TextStyle(fontFamily: 'Myriadpro', fontWeight: FontWeight.w700),),
           automaticallyImplyLeading: false,
           actions: [
             IconButton(
