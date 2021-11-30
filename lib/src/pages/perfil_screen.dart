@@ -103,7 +103,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
               border: Border.all(color: Colors.black, width: 3),
               image: const DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage('assets/user.png'),
+                image: AssetImage('assets/usuario.png'),
               )));
     }
     /*return const Image(

@@ -201,6 +201,11 @@ class _RegistroClientePageState extends State<RegistroClientePage> {
                             );
 
                             addUser();
+                            //aqui mandar a authfirestore
+                            // context.read<AuthentificationFirebase>().signUp(
+                            //   email: ,
+                            //   password: ,
+                            // );
                           } else {
                             Fluttertoast.showToast(
                                 msg: "Por favor rellene todos los campos",
