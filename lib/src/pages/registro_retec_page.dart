@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RegistroRetecPage extends StatefulWidget {
   const RegistroRetecPage({Key? key}) : super(key: key);
@@ -20,11 +22,35 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
   late String _phone;
   late String _address;
   late String _card;
-  late String _date;
+  late String _cardDate;
+  late DateTime _registerDate;
   late String _ccv;
+  List<String> _jobs = [];
 
   @override
   Widget build(BuildContext context) {
+    CollectionReference cuentas =
+        FirebaseFirestore.instance.collection('cuentas');
+
+    Future<void> addUser() {
+
+      return cuentas
+          .add({
+            'nombre': _name,
+            'telefono': _phone,
+            'direccion': _address,
+            'tarjeta': _card,
+            'fecha_vencimiento': _cardDate,
+            'ccv': _ccv,
+            'registro': _registerDate,
+            'imagen': "",
+            'tipo': "Reteccito",
+            'trabajos': _jobs
+          })
+          .then((value) => print("User Added"))
+          .catchError((error) => print("Failed to add user: $error"));
+    }
+
     return Scaffold(
       //resizeToAvoidBottomInset: false,
       appBar: AppBar(title: const Text('Registro'), centerTitle: true),
@@ -48,7 +74,7 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
                   labelText: 'Nombre',
                   hintText: 'Nombre'),
               validator: (String? name) {
-                if (name == null || name.isEmpty || name.length < 20) {
+                if (name == null || name.isEmpty || name.length < 15) {
                   return 'Por favor, ingrese un nombre válido';
                 }
                 return null;
@@ -107,14 +133,23 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
                     child: Column(
                       children: values.keys.map((String key) {
                         return CheckboxListTile(
-                          contentPadding: const EdgeInsets.all(0.0),
-                          activeColor: const Color.fromRGBO(242, 210, 114, 2.0),
+                          contentPadding: EdgeInsets.all(0.0),
+                          activeColor: Color.fromRGBO(242, 210, 114, 2.0),
                           title: Text(key),
                           value: values[key],
-                          onChanged: (value) {
-                            setState(() {
-                              values[key] = value!;
-                            });
+                          onChanged: (bool? value) {
+                            if(value != null){
+                              setState(() {
+                                values[key] = value;
+                              });
+                              if(values[key]!){
+                                print("El checkbox "+key+" fue establecido como true");
+                                _jobs.add(key);
+                              }else{
+                                _jobs.remove(key);
+                              }
+                              print(_jobs);
+                            }
                           },
                         );
                       }).toList(),
@@ -160,6 +195,7 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
                         }
                         return null;
                       },
+                      onSaved: (val) => _cardDate = val!,
                     ),
                   ),
                   const Spacer(),
@@ -230,6 +266,13 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
                   if (_formKey.currentState!.validate()) {
                     //Procesar la data
                     _formKey.currentState!.save();
+                    _registerDate = DateTime.now();
+                    /*values.keys.map((String key) {
+                      if (values[key] == true) {
+                        print(key);
+                      }
+                    });*/
+
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Column(
@@ -238,6 +281,13 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
                         duration: const Duration(seconds: 1),
                       ),
                     );
+                    addUser();
+                  } else {
+                    Fluttertoast.showToast(
+                        msg: "Por favor rellene todos los campos",
+                        gravity: ToastGravity.CENTER,
+                        toastLength: Toast.LENGTH_LONG,
+                        timeInSecForIosWeb: 2);
                   }
                 },
                 child: const Text('Siguiente >')),
