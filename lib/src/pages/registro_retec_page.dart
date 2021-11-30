@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RegistroRetecPage extends StatefulWidget {
   const RegistroRetecPage({Key? key}) : super(key: key);
@@ -20,11 +22,34 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
   late String _phone;
   late String _address;
   late String _card;
-  late String _date;
+  late String _cardDate;
+  late DateTime _registerDate;
   late String _ccv;
 
   @override
   Widget build(BuildContext context) {
+    CollectionReference cuentas =
+        FirebaseFirestore.instance.collection('cuentas');
+
+    Future<void> addUser() {
+
+      return cuentas
+          .add({
+            'nombre': _name,
+            'telefono': _phone,
+            'direccion': _address,
+            'tarjeta': _card,
+            'fecha_vencimiento': _cardDate,
+            'ccv': _ccv,
+            'registro': _registerDate,
+            'imagen': "",
+            'tipo': "Reteccito",
+            'trabajos': "Pendiente"
+          })
+          .then((value) => print("User Added"))
+          .catchError((error) => print("Failed to add user: $error"));
+    }
+
     return Scaffold(
       //resizeToAvoidBottomInset: false,
       appBar: AppBar(title: Text('Registro'), centerTitle: true),
@@ -108,10 +133,10 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
                       children: values.keys.map((String key) {
                         return CheckboxListTile(
                           contentPadding: EdgeInsets.all(0.0),
-                          activeColor: Color.fromRGBO(242,210,114, 2.0),
+                          activeColor: Color.fromRGBO(242, 210, 114, 2.0),
                           title: Text(key),
                           value: values[key],
-                          onChanged: ( value) {
+                          onChanged: (value) {
                             setState(() {
                               values[key] = value!;
                             });
@@ -160,6 +185,7 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
                         }
                         return null;
                       },
+                      onSaved: (val) => _cardDate = val!,
                     ),
                   ),
                   Spacer(),
@@ -230,15 +256,22 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
                   if (_formKey.currentState!.validate()) {
                     //Procesar la data
                     _formKey.currentState!.save();
+                    _registerDate = DateTime.now();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: _listaSeleccion()
-                        ),
+                            mainAxisSize: MainAxisSize.min,
+                            children: _listaSeleccion()),
                         duration: const Duration(seconds: 1),
                       ),
                     );
+                    addUser();
+                  } else {
+                    Fluttertoast.showToast(
+                        msg: "Por favor rellene todos los campos",
+                        gravity: ToastGravity.CENTER,
+                        toastLength: Toast.LENGTH_LONG,
+                        timeInSecForIosWeb: 2);
                   }
                 },
                 child: const Text('Siguiente >')),
@@ -252,11 +285,10 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
   List<Widget> _listaSeleccion() {
     List<Widget> lista = [];
     values.keys.map((String key) {
-      if(values[key]==true){
+      if (values[key] == true) {
         final tempWidget = ListTile(
           title: Text(key),
         );
-
 
         lista.add(tempWidget);
       }

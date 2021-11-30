@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RegistroClientePage extends StatefulWidget {
   const RegistroClientePage({Key? key}) : super(key: key);
@@ -15,12 +17,33 @@ class _RegistroClientePageState extends State<RegistroClientePage> {
   late String _phone;
   late String _address;
   late String _card;
-  late String _date;
+  late String _cardDate;
   late String _ccv;
-  
+  late DateTime _registerDate;
 
   @override
   Widget build(BuildContext context) {
+    CollectionReference cuentas =
+        FirebaseFirestore.instance.collection('cuentas');
+
+    Future<void> addUser() {
+      // Call the user's CollectionReference to add a new user
+      return cuentas
+          .add({
+            'nombre': _name, // John Doe
+            'telefono': _phone,
+            'direccion': _address, // Stokes and Sons
+            'tarjeta': _card,
+            'fecha_vencimiento': _cardDate,
+            'ccv': _ccv, // 42
+            'registro': _registerDate,
+            'tipo': "Cliente",
+            'imagen': ""
+          })
+          .then((value) => print("User Added"))
+          .catchError((error) => print("Failed to add user: $error"));
+    }
+
     return Scaffold(
       //resizeToAvoidBottomInset: false,
       appBar: AppBar(title: Text('Registro'), centerTitle: true),
@@ -46,7 +69,7 @@ class _RegistroClientePageState extends State<RegistroClientePage> {
                   }
                   return null;
                 },
-                onSaved:(val) => _name = val!,
+                onSaved: (val) => _name = val!,
               ),
               SizedBox(height: boxHeight),
               TextFormField(
@@ -63,7 +86,7 @@ class _RegistroClientePageState extends State<RegistroClientePage> {
                   }
                   return null;
                 },
-                onSaved:(val) => _phone = val!,
+                onSaved: (val) => _phone = val!,
               ),
               SizedBox(height: boxHeight),
               TextFormField(
@@ -76,12 +99,14 @@ class _RegistroClientePageState extends State<RegistroClientePage> {
                     labelText: 'Dirección',
                     hintText: 'Dirección'),
                 validator: (String? direccion) {
-                  if (direccion == null || direccion.isEmpty || direccion.length < 20) {
+                  if (direccion == null ||
+                      direccion.isEmpty ||
+                      direccion.length < 20) {
                     return 'Por favor, ingrese una dirección válida';
                   }
                   return null;
                 },
-                onSaved:(val) => _address = val!,
+                onSaved: (val) => _address = val!,
               ),
               SizedBox(height: boxHeight),
               TextFormField(
@@ -93,12 +118,14 @@ class _RegistroClientePageState extends State<RegistroClientePage> {
                     labelText: 'Tarjeta',
                     hintText: 'Tarjeta'),
                 validator: (String? tarjeta) {
-                  if (tarjeta == null || tarjeta.isEmpty || (tarjeta.length != 16 && tarjeta.length != 19)) {
+                  if (tarjeta == null ||
+                      tarjeta.isEmpty ||
+                      (tarjeta.length != 16 && tarjeta.length != 19)) {
                     return 'Por favor, ingrese un número de tarjeta válido';
                   }
                   return null;
                 },
-                onSaved:(val) => _card = val!,
+                onSaved: (val) => _card = val!,
               ),
               Padding(
                 padding: const EdgeInsets.all(20.0),
@@ -114,11 +141,14 @@ class _RegistroClientePageState extends State<RegistroClientePage> {
                             labelText: 'Fecha',
                             hintText: 'Fecha'),
                         validator: (String? date) {
-                          if (date == null || date.isEmpty || date.length != 5) {
+                          if (date == null ||
+                              date.isEmpty ||
+                              date.length != 5) {
                             return 'Fecha inválida';
                           }
                           return null;
                         },
+                        onSaved: (val) => _cardDate = val!,
                       ),
                     ),
                     Spacer(),
@@ -134,12 +164,11 @@ class _RegistroClientePageState extends State<RegistroClientePage> {
                         validator: (String? ccv) {
                           if (ccv == null || ccv.isEmpty || ccv.length != 3) {
                             return 'Inválido';
-                          }else{
-                            
+                          } else {
                             return null;
                           }
                         },
-                        onSaved:(val) => _ccv = val!,
+                        onSaved: (val) => _ccv = val!,
                       ),
                     ),
                   ],
@@ -157,18 +186,27 @@ class _RegistroClientePageState extends State<RegistroClientePage> {
                           if (_formKey.currentState!.validate()) {
                             //Procesar la data
                             _formKey.currentState!.save();
+                            _registerDate = DateTime.now();
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content:  Column(
+                                content: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    const Text( "Validando "),
-                                    Text( _name)
+                                    const Text("Validando "),
+                                    Text(_name)
                                   ],
                                 ),
                                 duration: const Duration(seconds: 1),
                               ),
                             );
+
+                            addUser();
+                          } else {
+                            Fluttertoast.showToast(
+                                msg: "Por favor rellene todos los campos",
+                                gravity: ToastGravity.CENTER,
+                                toastLength: Toast.LENGTH_LONG,
+                                timeInSecForIosWeb: 2);
                           }
                         },
                         child: const Text('Siguiente >')),
