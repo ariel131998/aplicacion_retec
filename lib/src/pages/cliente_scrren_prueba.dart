@@ -331,6 +331,7 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
     //otra forma
     //CollectionReference collectionReference = FirebaseFirestore.instance.collection('usuarios');
     //para agregar la info a la base de datos
+    //collectionReference.doc("obtener correo de auth").set(informacionUsuario);
     collectionReference.add(
         informacionUsuario); //se tendria que ir modificando la informacion del usuario.
   }
