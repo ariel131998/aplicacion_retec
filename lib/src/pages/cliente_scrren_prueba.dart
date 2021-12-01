@@ -283,7 +283,7 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
       //   'Prueba cambio',
       //   style: optionStyle,
       // )
-      buscarScreen(),
+      buscarScreen(context),
       const Text(
         'Index 2: Pedidos',
         style: optionStyle,
