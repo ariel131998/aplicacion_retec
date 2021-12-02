@@ -74,6 +74,43 @@ class AuthentificationFirebase {
       usuarioActual = _firebaseAuth.currentUser!.email.toString();
       return usuarioActual;
   }
+  Future<String> cambiarContrasenaUsuario({required String newPassword}) async{
+    //String usuarioActual = '';
+    try {
+      await _firebaseAuth.currentUser!.updatePassword(newPassword) ; //!.email.toString();
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg: "contrasena actualizada",
+      );
+      return "Contrasena actualizada";
+    } on FirebaseAuthException catch (e) {
+        Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg: e.message.toString(),
+      );
+      return e.message.toString();
+    }
+  }
+
+  Future<String> autentificarNuevamente({required String email, required String password}) async{  
+      try {
+      var credential = EmailAuthProvider.credential(email: email, password: password); //(email,password);
+      await _firebaseAuth.currentUser!.reauthenticateWithCredential(
+        credential
+      );
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg: "datos correctos",
+      );
+      return "datos correctos";
+    } on FirebaseAuthException catch (e) {
+      Fluttertoast.showToast(
+        gravity: ToastGravity.BOTTOM,
+        msg: e.message.toString(),
+      );
+      return e.message.toString();
+    }
+  }
 }
 
 

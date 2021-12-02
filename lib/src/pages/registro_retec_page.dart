@@ -13,11 +13,12 @@ class RegistroRetecPage extends StatefulWidget {
 }
 
 class _RegistroRetecPageState extends State<RegistroRetecPage> {
-  Map<String, bool> values = {
+    Map<String, bool> values = {
     'Plomería': false,
     'Electricista': false,
     'Albañilería': false,
   };
+
   var tmpArray = [];
   final boxHeight = 20.0;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -26,8 +27,8 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
   late String _address;
   late String _card;
   late String _cardDate;
-  late DateTime _registerDate;
   late String _ccv;
+  late DateTime _registerDate;
   late String _email;
   late String _password;
   List<String> _jobs = [];
@@ -38,6 +39,7 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
         FirebaseFirestore.instance.collection('cuentas');
 
     Future<void> addUser() {
+<<<<<<< HEAD
       FirebaseFirestore.instance.collection('cuentas').doc(_email).set({
         'correo': _email,
         'contraseña': _password,
@@ -56,6 +58,9 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
         'estrellas': "3"
         // ignore: avoid_print
       }).then((value) => print("User Added"));
+=======
+      // Call the user's CollectionReference to add a new user
+>>>>>>> main
       return cuentas
           .doc(_email)
           .set({
@@ -68,12 +73,15 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
             'fecha_vencimiento': _cardDate,
             'ccv': _ccv,
             'registro': _registerDate,
-            'imagen': "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
             'tipo': "Reteccito",
             'trabajos': _jobs,
+<<<<<<< HEAD
             'categoria': _jobs[0],
             'tiempo': "A 5 minutos",
             'estrellas': "3"
+=======
+            'imagen': "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+>>>>>>> main
           })
           .then((value) => print("User Added"))
           .catchError((error) => print("Failed to add user: $error"));
@@ -84,117 +92,114 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
       appBar: AppBar(title: const Text('Registro'), centerTitle: true),
       body: Form(
         key: _formKey,
-        child: ListView(
-          padding: const EdgeInsets.only(
-            top: 30.0,
-            left: 30.0,
-            right: 30.0,
-          ),
-          shrinkWrap: true,
-          children: <Widget>[
-            SizedBox(height: boxHeight),
-            TextFormField(
-              keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(
-                  fillColor: Color(0xFFE0E0E0),
-                  filled: true,
-                  border: OutlineInputBorder(),
-                  labelText: 'Correo electrónico',
-                  hintText: 'Correo electrónico'),
-              validator: (String? email) {
-                if (email == null ||
-                    email.isEmpty ||
-                    !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                        .hasMatch(email)) {
-                  return 'Por favor, ingrese un email válido';
-                }
-                return null;
-              },
-              onSaved: (val) => _email = val!,
-            ),
-            SizedBox(height: boxHeight),
-            TextFormField(
-              obscuringCharacter: '•',
-              obscureText: true,
-              keyboardType: TextInputType.visiblePassword,
-              decoration: const InputDecoration(
-                  fillColor: Color(0xFFE0E0E0),
-                  filled: true,
-                  border: OutlineInputBorder(),
-                  labelText: 'Contraseña',
-                  hintText: 'Contraseña'),
-              validator: (String? password) {
-                if (password == null ||
-                    password.isEmpty ||
-                    password.length < 5) {
-                  return 'Por favor, ingrese una contraseña válida';
-                }
-                return null;
-              },
-              onSaved: (val) => _password = val!,
-            ),
-            SizedBox(height: boxHeight),
-            TextFormField(
-              textCapitalization: TextCapitalization.words,
-              keyboardType: TextInputType.name,
-              decoration: const InputDecoration(
-                  fillColor: Color(0xFFE0E0E0),
-                  filled: true,
-                  border: OutlineInputBorder(),
-                  labelText: 'Nombre',
-                  hintText: 'Nombre'),
-              validator: (String? name) {
-                if (name == null || name.isEmpty || name.length < 15) {
-                  return 'Por favor, ingrese un nombre válido';
-                }
-                return null;
-              },
-              onSaved: (val) => _name = val!,
-            ),
-            SizedBox(height: boxHeight),
-            TextFormField(
-              keyboardType: TextInputType.phone,
-              decoration: const InputDecoration(
-                  fillColor: Color(0xFFE0E0E0),
-                  filled: true,
-                  border: OutlineInputBorder(),
-                  labelText: 'Teléfono',
-                  hintText: 'Teléfono'),
-              validator: (String? phone) {
-                if (phone == null || phone.isEmpty || phone.length != 10) {
-                  return 'Por favor, ingrese un número de teléfono válido';
-                }
-                return null;
-              },
-              onSaved: (val) => _phone = val!,
-            ),
-            SizedBox(height: boxHeight),
-            TextFormField(
-              textCapitalization: TextCapitalization.sentences,
-              keyboardType: TextInputType.streetAddress,
-              decoration: const InputDecoration(
-                  fillColor: Color(0xFFE0E0E0),
-                  filled: true,
-                  border: OutlineInputBorder(),
-                  labelText: 'Dirección',
-                  hintText: 'Dirección'),
-              validator: (String? direccion) {
-                if (direccion == null ||
-                    direccion.isEmpty ||
-                    direccion.length < 20) {
-                  return 'Por favor, ingrese una dirección válida';
-                }
-                return null;
-              },
-              onSaved: (val) => _address = val!,
-            ),
-            Container(
+        child: Padding(
+          padding: const EdgeInsets.all(30.0),
+          child: ListView(
+            children: <Widget>[
+              SizedBox(height: boxHeight),
+              TextFormField(
+                keyboardType: TextInputType.emailAddress,
+                decoration: const InputDecoration(
+                    fillColor: Color(0xFFE0E0E0),
+                    filled: true,
+                    border: OutlineInputBorder(),
+                    labelText: 'Correo electrónico',
+                    hintText: 'Correo electrónico'),
+                validator: (String? email) {
+                  if (email == null ||
+                      email.isEmpty ||
+                      !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                          .hasMatch(email)) {
+                    return 'Por favor, ingrese un email válido';
+                  }
+                  return null;
+                },
+                onSaved: (val) => _email = val!,
+              ),
+              SizedBox(height: boxHeight),
+              TextFormField(
+                obscuringCharacter: '•',
+                obscureText: true,
+                keyboardType: TextInputType.visiblePassword,
+                decoration: const InputDecoration(
+                    fillColor: Color(0xFFE0E0E0),
+                    filled: true,
+                    border: OutlineInputBorder(),
+                    labelText: 'Contraseña',
+                    hintText: 'Contraseña'),
+                validator: (String? password) {
+                  if (password == null ||
+                      password.isEmpty ||
+                      password.length < 5) {
+                    return 'Por favor, ingrese una contraseña válida';
+                  }
+                  return null;
+                },
+                onSaved: (val) => _password = val!,
+              ),
+              SizedBox(height: boxHeight),
+              TextFormField(
+                textCapitalization: TextCapitalization.words,
+                keyboardType: TextInputType.name,
+                decoration: const InputDecoration(
+                    fillColor: Color(0xFFE0E0E0),
+                    filled: true,
+                    border: OutlineInputBorder(),
+                    labelText: 'Nombre',
+                    hintText: 'Nombre'),
+                validator: (String? name) {
+                  if (name == null || name.isEmpty || name.length < 15) {
+                    return 'Por favor, ingrese un nombre válido';
+                  }
+                  return null;
+                },
+                onSaved: (val) => _name = val!,
+              ),
+              SizedBox(height: boxHeight),
+              TextFormField(
+                keyboardType: TextInputType.phone,
+                decoration: const InputDecoration(
+                    fillColor: Color(0xFFE0E0E0),
+                    filled: true,
+                    border: OutlineInputBorder(),
+                    labelText: 'Teléfono',
+                    hintText: 'Teléfono'),
+                validator: (String? phone) {
+                  if (phone == null || phone.isEmpty || phone.length != 10) {
+                    return 'Por favor, ingrese un número de teléfono válido';
+                  }
+                  return null;
+                },
+                onSaved: (val) => _phone = val!,
+              ),
+              SizedBox(height: boxHeight),
+              TextFormField(
+                textCapitalization: TextCapitalization.sentences,
+                keyboardType: TextInputType.streetAddress,
+                decoration: const InputDecoration(
+                    hintMaxLines: 2,
+                    fillColor: Color(0xFFE0E0E0),
+                    filled: true,
+                    border: OutlineInputBorder(),
+                    labelText: 'Dirección',
+                    hintText: 'Dirección'),
+                validator: (String? direccion) {
+                  if (direccion == null ||
+                      direccion.isEmpty ||
+                      direccion.length < 20) {
+                    return 'Por favor, ingrese una dirección válida';
+                  }
+                  return null;
+                },
+                onSaved: (val) => _address = val!,
+              ),
+             Container(
               padding: const EdgeInsets.only(
                 top: 10.0,
               ),
-              height: 200,
+              height: 50,
               child: ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
+                //physics: const NeverScrollableScrollPhysics(),
                 scrollDirection: Axis.vertical,
                 itemCount: 1,
                 itemBuilder: (context, index) {
@@ -230,72 +235,83 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
                 },
               ),
             ),
-            TextFormField(
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                  fillColor: Color(0xFFE0E0E0),
-                  filled: true,
-                  border: OutlineInputBorder(),
-                  labelText: 'Tarjeta',
-                  hintText: 'Tarjeta'),
-              validator: (String? tarjeta) {
-                if (tarjeta == null ||
-                    tarjeta.isEmpty ||
-                    (tarjeta.length != 16 && tarjeta.length != 19)) {
-                  return 'Por favor, ingrese un número de tarjeta válido';
-                }
-                return null;
-              },
-              onSaved: (val) => _card = val!,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      keyboardType: TextInputType.datetime,
-                      decoration: const InputDecoration(
-                          fillColor: Color(0xFFE0E0E0),
-                          filled: true,
-                          border: OutlineInputBorder(),
-                          labelText: 'Fecha',
-                          hintText: 'Fecha'),
-                      validator: (String? date) {
-                        if (date == null || date.isEmpty || date.length != 5) {
-                          return 'Fecha inválida';
-                        }
-                        return null;
-                      },
-                      onSaved: (val) => _cardDate = val!,
-                    ),
-                  ),
-                  const Spacer(),
-                  Expanded(
-                    child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                          fillColor: Color(0xFFE0E0E0),
-                          filled: true,
-                          border: OutlineInputBorder(),
-                          labelText: 'CCV',
-                          hintText: 'CCV'),
-                      validator: (String? ccv) {
-                        if (ccv == null || ccv.isEmpty || ccv.length != 3) {
-                          return 'Inválido';
-                        } else {
-                          return null;
-                        }
-                      },
-                      onSaved: (val) => _ccv = val!,
-                    ),
-                  ),
-                ],
+              SizedBox(height: boxHeight),
+              TextFormField(
+                keyboardType: TextInputType.number,
+                maxLength: 19,
+                decoration: const InputDecoration(
+                    fillColor: Color(0xFFE0E0E0),
+                    filled: true,
+                    border: OutlineInputBorder(),
+                    labelText: 'Tarjeta',
+                    hintText: 'Tarjeta'),
+                validator: (String? tarjeta) {
+                  if (tarjeta == null ||
+                      tarjeta.isEmpty ||
+                      (tarjeta.length != 16 && tarjeta.length != 19)) {
+                    return 'Por favor, ingrese un número de tarjeta válido';
+                  }
+                  return null;
+                },
+                onSaved: (val) => _card = val!,
               ),
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        keyboardType: TextInputType.datetime,
+                        maxLength: 5,
+                        decoration: const InputDecoration(
+                            fillColor: Color(0xFFE0E0E0),
+                            filled: true,
+                            border: OutlineInputBorder(),
+                            labelText: 'Fecha',
+                            hintText: 'Fecha'),
+                        validator: (String? date) {
+                          if (date == null ||
+                              date.isEmpty ||
+                              date.length != 5) {
+                            return 'Fecha inválida';
+                          }
+                          return null;
+                        },
+                        onSaved: (val) => _cardDate = val!,
+                      ),
+                    ),
+                    const Spacer(),
+                    Expanded(
+                      child: TextFormField(
+                        keyboardType: TextInputType.number,
+                        maxLength: 3,
+                        decoration: const InputDecoration(
+                            fillColor: Color(0xFFE0E0E0),
+                            filled: true,
+                            border: OutlineInputBorder(),
+                            labelText: 'CCV',
+                            hintText: 'CCV'),
+                        validator: (String? ccv) {
+                          if (ccv == null || ccv.isEmpty || ccv.length != 3) {
+                            return 'Inválido';
+                          } else {
+                            return null;
+                          }
+                        },
+                        onSaved: (val) => _ccv = val!,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              
+
+            ],
+          ),
         ),
+        
       ),
+
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
@@ -306,21 +322,22 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
                   // Validate will return true if the form is valid, or false if
                   // the form is invalid.
                   if (_formKey.currentState!.validate()) {
-                    //Procesar la data
                     _formKey.currentState!.save();
                     _registerDate = DateTime.now();
+
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text("Dando de alta"),
                         duration: Duration(seconds: 1),
                       ),
                     );
-                    addUser();
                     try {
                       UserCredential userCredential = await FirebaseAuth
                           .instance
                           .createUserWithEmailAndPassword(
                               email: _email, password: _password);
+                      
+                      addUser();
                     } on FirebaseAuthException catch (e) {
                       if (e.code == 'weak-password') {
                         Fluttertoast.showToast(
@@ -338,10 +355,18 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
                     } catch (e) {
                       print(e);
                     }
-                    context.read<AuthentificationFirebase>().signUp(
-                          email: _email,
-                          password: _password,
-                        );
+                    try {
+                      UserCredential userCredential = await FirebaseAuth
+                          .instance
+                          .signInWithEmailAndPassword(
+                              email: _email, password: _password);
+                    } on FirebaseAuthException catch (e) {
+                      if (e.code == 'user-not-found') {
+                        print('No user found for that email.');
+                      } else if (e.code == 'wrong-password') {
+                        print('Wrong password provided for that user.');
+                      }
+                    }
                   } else {
                     Fluttertoast.showToast(
                         msg: "Por favor rellene todos los campos",
@@ -354,21 +379,6 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
           ],
         ),
       ),
-      //),
     );
-  }
-
-  List<Widget> _listaSeleccion() {
-    List<Widget> lista = [];
-    values.keys.map((String key) {
-      if (values[key] == true) {
-        final tempWidget = ListTile(
-          title: Text(key),
-        );
-
-        lista.add(tempWidget);
-      }
-    });
-    return lista;
   }
 }
