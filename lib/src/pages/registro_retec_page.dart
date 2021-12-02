@@ -39,7 +39,7 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
         FirebaseFirestore.instance.collection('cuentas');
 
     Future<void> addUser() {
-      FirebaseFirestore.instance.collection('cuentas').doc(_email).set({
+      FirebaseFirestore.instance.collection('usuarios').doc(_email).set({
         'correo': _email,
         'contraseña': _password,
         'nombre': _name,
