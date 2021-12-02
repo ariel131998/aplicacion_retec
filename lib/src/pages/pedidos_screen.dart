@@ -76,6 +76,7 @@ class _PedidosScreenState extends State<PedidosScreen> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               Text(status),
+              const Icon(Icons.paid_outlined),
               Text(costo),
               const Icon(Icons.star_outline_sharp),
               Text(estrellas),
