@@ -208,22 +208,36 @@ class DataSearch extends SearchDelegate<String> {
         []; //obtendremos su nombre de todos los usuarios como sugerencia. despues reducir a unos pocos
     //ya muestra estos datos
     List<String> datosMapCategoria = [];
+
+    //pruebas
+    List<String> datosEstrellas = [];
+    List<String> datoslogo = [];
+    List<String> datostiempo = [];
+
     FirebaseFirestore.instance.collection('usuarios').get().then((value) {
       value.docs.forEach((element) {
         //element.get('name');
         datosMap.add(element.get('name'));
         datosMapCategoria.add(element.get('categoria'));
+
+          datosEstrellas.add(element.get('Calficacion'));
+          datoslogo.add(element.get('logo'));
+          datostiempo.add(element.get('tiempo'));
       });
     });
     //esta obteniendo nada
     List<String> datosMapQuery = []; //buscaremos por categoria
     List<String> datosCategoriaQuery = [];
+    
     FirebaseFirestore.instance.collection('usuarios').get().then((value) {
       value.docs.forEach((element) {
         String prueba = element.get('categoria');
         if (prueba.contains(query) == true) {
           datosMapQuery.add(element.get('name'));
           datosCategoriaQuery.add(element.get('categoria'));
+          datosEstrellas.add(element.get('Calficacion'));
+          datoslogo.add(element.get('logo'));
+          datostiempo.add(element.get('tiempo'));
         }
       });
     });
@@ -247,7 +261,13 @@ class DataSearch extends SearchDelegate<String> {
           //itemCount: snapshot.data!.docs.length,
           itemBuilder: (context, index) => ListTile(
             onTap: (){
-              Navigator.of(context).pushNamed('/PagoScreen');
+              Navigator.of(context).pushNamed('/PagoScreen', arguments: {
+                    'name': suggestionList[index] ,
+                    'categoria': suggestionListCate[index],
+                    'tiempo':  datostiempo[index],
+                    'estrellas': datosEstrellas[index],
+                    'logo': datoslogo[index]
+                  });
               //showResults(context);//ya es un metodo heredado
             },
             leading: const Icon(Icons.person),

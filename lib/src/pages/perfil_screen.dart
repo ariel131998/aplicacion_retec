@@ -62,6 +62,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
             if (snapshot.connectionState == ConnectionState.done) {
               Map<String, dynamic> data =
                   snapshot.data!.data() as Map<String, dynamic>;
+                  print(data);
               _foto = data["imagen"];
               _nombre = data["nombre"];
               _telefono = data["telefono"];
