@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_retec/authentification/authentification_firebase.dart';
 import 'package:flutter_retec/src/pages/buscar_screen.dart';
+import 'package:flutter_retec/src/pages/pedidos_screen.dart';
 import 'package:flutter_retec/src/pages/perfil_screen.dart';
 import 'package:flutter_retec/tema/palette.dart';
 
@@ -296,10 +297,7 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
       //   style: optionStyle,
       // )
       buscarScreen(context),
-      const Text(
-        'Index 2: Pedidos',
-        style: optionStyle,
-      ),
+      const PedidosScreen(),
       const PerfilScreen(),
     ];
     return _widgetOptions.elementAt(_selectedIndex);

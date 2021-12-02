@@ -2,9 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geocoding/geocoding.dart';
+
 // ignore: unused_import
 import 'package:path/path.dart';
 
@@ -21,6 +23,8 @@ class _PagoScreenState extends State<PagoScreen> {
 
   String _opcionS = 'Electricista';
   late String _opcionP;
+  late String _correo;
+  late String _cliente;
   late Position _currentPosition;
   late GoogleMapController mapController;
   String _currentAddress = '';
@@ -91,6 +95,8 @@ class _PagoScreenState extends State<PagoScreen> {
               String dat;
               Map<String, dynamic> data =
                   snapshot.data!.data() as Map<String, dynamic>;
+              _correo = data["correo"];
+              _cliente = data['nombre'];
               //print(data);
               dat = data["tarjeta"];
               dat =
@@ -408,7 +414,41 @@ class _PagoScreenState extends State<PagoScreen> {
                     RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.0),
                 ))),
-            onPressed: () => Navigator.pop(context),
+            onPressed: () {
+              try {
+                FirebaseFirestore.instance
+                    .collection('pedidos')
+                    .doc(_correo)
+                    .collection('pedidos')
+                    .doc(DateTime.now().toString())
+                    .set({
+                  'Calificacion': arguments!['estrellas'],
+                  'Categoria': arguments!['categoria'],
+                  'tiempo': arguments!['tiempo'],
+                  'imagen': arguments!['logo'],
+                  'Cliente': _cliente,
+                  'Costo': _precio[_opcionS],
+                  'forma_pago': 'Tarjeta',
+                  'reteccito': arguments!['name'],
+                  'servicio': _opcionS,
+                  'status': 'Finalizado',
+                });
+                Fluttertoast.showToast(
+                  msg: "Información Actualizada",
+                  gravity: ToastGravity.BOTTOM,
+                  textColor: Colors.black,
+                  backgroundColor: Colors.amber[200],
+                );
+              } on FirebaseAuthException catch (e) {
+                Fluttertoast.showToast(
+                  msg: e.message.toString(),
+                  gravity: ToastGravity.BOTTOM,
+                  textColor: Colors.black,
+                  backgroundColor: Colors.amber[200],
+                );
+              }
+              Navigator.pop(context);
+            },
             child: const Text('Pagar',
                 style: TextStyle(
                   fontSize: 18,
