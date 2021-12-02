@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
@@ -14,8 +16,11 @@ class PagoScreen extends StatefulWidget {
 }
 
 class _PagoScreenState extends State<PagoScreen> {
+  CollectionReference users = FirebaseFirestore.instance.collection('cuentas');
+  var firebaseUser = FirebaseAuth.instance.currentUser;
+
   String _opcionS = 'Electricista';
-  String _opcionP = 'xxxxxxxxxxxxxx2345';
+  late String _opcionP;
   late Position _currentPosition;
   late GoogleMapController mapController;
   String _currentAddress = '';
@@ -28,15 +33,25 @@ class _PagoScreenState extends State<PagoScreen> {
     'Electricista': '500.00',
     'Albañileria': '600.00',
     'Plomeria': '400.00',
+    'Mecánico': '800.00',
+    'Maestro': '1000.00',
+    'Soldador': '300.00',
+    'Bartender': '2500.00',
+    'Técnico en hardware': '500.00',
+    'Constructor': '3000.00',
   };
 
-  final List<String> _opciones = ['Albañileria', 'Electricista', 'Plomeria'];
-  final List<String> _formasP = [
-    'xxxxxxxxxxxxxx2345',
-    'xxxxxxxxxxxxxx7655',
-    'xxxxxxxxxxxxxx8765'
+  final List<String> _opciones = [
+    'Albañileria',
+    'Electricista',
+    'Plomeria',
+    'Mecánico',
+    'Maestro',
+    'Soldador',
+    'Bartender',
+    'Técnico en hardware',
+    'Constructor'
   ];
-
   @override
   void initState() {
     super.initState();
@@ -54,27 +69,51 @@ class _PagoScreenState extends State<PagoScreen> {
     arguments = ModalRoute.of(context)!.settings.arguments as Map?;
 
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text(
-          'Servicio',
-          style:
-              TextStyle(fontFamily: 'Myriadpro', fontWeight: FontWeight.w700),
+        appBar: AppBar(
+          centerTitle: true,
+          title: const Text(
+            'Servicio',
+            style:
+                TextStyle(fontFamily: 'Myriadpro', fontWeight: FontWeight.w700),
+          ),
         ),
-      ),
-      body: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 20.0),
-          children: [
-            _infoRectecito(),
-            const SizedBox(height: 20.0),
-            _servicio(),
-            const SizedBox(height: 20.0),
-            _formaDePago(),
-            _direccionServicio(context),
-            _total(),
-            _pagar(context),
-          ]),
-    );
+        body: FutureBuilder(
+          future: users.doc(firebaseUser!.email).get(),
+          builder:
+              (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+            if (!snapshot.hasData) {
+              return const Center(
+                child:
+                    CircularProgressIndicator(), //aqui puede ir un indicador de cargo
+              );
+            }
+            if (snapshot.connectionState == ConnectionState.done) {
+              String dat;
+              Map<String, dynamic> data =
+                  snapshot.data!.data() as Map<String, dynamic>;
+              //print(data);
+              dat = data["tarjeta"];
+              dat =
+                  'xxxxxxxxxxxxxxx' + dat.substring(dat.length - 4, dat.length);
+
+              _opcionP = dat.toString();
+              //.substring(_formasP[1].length - 4, _formasP[1].length);
+            }
+            return ListView(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 25.0, vertical: 20.0),
+                children: [
+                  _infoRectecito(),
+                  const SizedBox(height: 20.0),
+                  _servicio(),
+                  const SizedBox(height: 20.0),
+                  _formaDePago(),
+                  _direccionServicio(context),
+                  _total(),
+                  _pagar(context),
+                ]);
+          },
+        ));
   }
 
   Widget _infoRectecito() {
@@ -186,8 +225,8 @@ class _PagoScreenState extends State<PagoScreen> {
         ]));
   }
 
-  List<DropdownMenuItem<String>> formasdePago() {
-    List<DropdownMenuItem<String>> lista = [];
+  /* List<DropdownMenuItem<String>> formasdePago() {
+    //List<DropdownMenuItem<String>> lista = [];
     for (var pago in _formasP) {
       lista.add(DropdownMenuItem(
         alignment: Alignment.centerRight,
@@ -196,34 +235,39 @@ class _PagoScreenState extends State<PagoScreen> {
       ));
     }
     return lista;
-  }
+  }*/
 
   Widget _formaDePago() {
+    bool? _opc = true;
     return Container(
         padding: const EdgeInsets.all(15),
         child: Column(children: [
-          const Align(
-              alignment: Alignment.centerLeft,
-              child: Text('Tarjeta',
-                  style: TextStyle(
-                    fontSize: 20,
-                  ))),
+          Row(children: const [
+            Icon(Icons.credit_card),
+            SizedBox(width: 10),
+            Align(
+                alignment: Alignment.centerLeft,
+                child: Text('Tarjeta',
+                    style: TextStyle(
+                      fontSize: 20,
+                    )))
+          ]),
           Row(
             children: [
-              const Icon(Icons.credit_card),
-              const SizedBox(width: 30.0),
               Expanded(
-                  child: DropdownButton(
-                borderRadius: BorderRadius.circular(20),
-                isExpanded: true,
-                value: _opcionP,
-                items: formasdePago(),
-                onChanged: (opt) {
-                  setState(() {
-                    _opcionP = opt.toString();
-                  });
-                },
-              )),
+                child: RadioListTile(
+                  activeColor: Colors.amber[200],
+                  title: Text(_opcionP),
+                  value: true,
+                  //items: _Pago, //formasdePago(),
+                  onChanged: (opt) {
+                    setState(() {
+                      // _opc = opt as bool?;
+                    });
+                  },
+                  groupValue: _opc,
+                ),
+              ),
             ],
           )
         ]));

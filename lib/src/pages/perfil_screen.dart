@@ -6,7 +6,6 @@ import 'package:flutter_retec/authentification/authentification_firebase.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.Dart';
-import 'package:firebase_auth/firebase_auth.dart';
 // ignore: implementation_imports
 import 'package:provider/src/provider.dart';
 

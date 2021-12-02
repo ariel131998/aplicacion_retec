@@ -38,6 +38,24 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
         FirebaseFirestore.instance.collection('cuentas');
 
     Future<void> addUser() {
+      FirebaseFirestore.instance.collection('cuentas').doc(_email).set({
+        'correo': _email,
+        'contraseña': _password,
+        'nombre': _name,
+        'telefono': _phone,
+        'direccion': _address,
+        'tarjeta': _card,
+        'fecha_vencimiento': _cardDate,
+        'ccv': _ccv,
+        'registro': _registerDate,
+        'imagen': "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+        'tipo': "Reteccito",
+        'trabajos': _jobs,
+        'categoria': _jobs[0],
+        'tiempo': "A 5 minutos",
+        'estrellas': "3"
+        // ignore: avoid_print
+      }).then((value) => print("User Added"));
       return cuentas
           .doc(_email)
           .set({
@@ -52,7 +70,10 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
             'registro': _registerDate,
             'imagen': "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
             'tipo': "Reteccito",
-            'trabajos': _jobs
+            'trabajos': _jobs,
+            'categoria': _jobs[0],
+            'tiempo': "A 5 minutos",
+            'estrellas': "3"
           })
           .then((value) => print("User Added"))
           .catchError((error) => print("Failed to add user: $error"));
