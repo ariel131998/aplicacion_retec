@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_retec/authentification/authentification_firebase.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/src/provider.dart';
 
 class RegistroRetecPage extends StatefulWidget {
   const RegistroRetecPage({Key? key}) : super(key: key);
@@ -25,6 +28,8 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
   late String _cardDate;
   late DateTime _registerDate;
   late String _ccv;
+  late String _email;
+  late String _password;
   List<String> _jobs = [];
 
   @override
@@ -36,6 +41,8 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
 
       return cuentas
           .add({
+            'correo': _email,
+            'contraseña': _password,
             'nombre': _name,
             'telefono': _phone,
             'direccion': _address,
@@ -64,6 +71,48 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
           ),
           shrinkWrap: true,
           children: <Widget>[
+            SizedBox(height: boxHeight),
+              TextFormField(
+                keyboardType: TextInputType.emailAddress,
+                decoration: const InputDecoration(
+                    fillColor: Color(0xFFE0E0E0),
+                    filled: true,
+                    border: OutlineInputBorder(),
+                    labelText: 'Correo electrónico',
+                    hintText: 'Correo electrónico'),
+                validator: (String? email) {
+                  if (email == null ||
+                      email.isEmpty ||
+                      !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                          .hasMatch(email)) {
+                    return 'Por favor, ingrese un email válido';
+                  }
+                  return null;
+                },
+                onSaved: (val) => _email = val!,
+              ),
+              SizedBox(height: boxHeight),
+              TextFormField(
+                obscuringCharacter: '•',
+                obscureText: true,
+                keyboardType: TextInputType.visiblePassword,
+                decoration: const InputDecoration(
+                    fillColor: Color(0xFFE0E0E0),
+                    filled: true,
+                    border: OutlineInputBorder(),
+                    labelText: 'Contraseña',
+                    hintText: 'Contraseña'),
+                validator: (String? password) {
+                  if (password == null ||
+                      password.isEmpty ||
+                      password.length < 5) {
+                    return 'Por favor, ingrese una contraseña válida';
+                  }
+                  return null;
+                },
+                onSaved: (val) => _password = val!,
+              ),
+              SizedBox(height: boxHeight),
             TextFormField(
               textCapitalization: TextCapitalization.words,
               keyboardType: TextInputType.name,
@@ -221,36 +270,6 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
                 ],
               ),
             ),
-            /*Row(
-              children: [
-                Spacer(),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: ElevatedButton(
-                      onPressed: () {
-                        // Validate will return true if the form is valid, or false if
-                        // the form is invalid.
-                        if (_formKey.currentState!.validate()) {
-                          //Procesar la data
-                          _formKey.currentState!.save();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  const Text("Validando "),
-                                  Text(_name)
-                                ],
-                              ),
-                              duration: const Duration(seconds: 1),
-                            ),
-                          );
-                        }
-                      },
-                      child: const Text('Siguiente >')),
-                ),
-              ],
-            )*/
           ],
         ),
       ),
@@ -260,28 +279,47 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
           children: [
             const Spacer(),
             ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   // Validate will return true if the form is valid, or false if
                   // the form is invalid.
                   if (_formKey.currentState!.validate()) {
                     //Procesar la data
                     _formKey.currentState!.save();
                     _registerDate = DateTime.now();
-                    /*values.keys.map((String key) {
-                      if (values[key] == true) {
-                        print(key);
-                      }
-                    });*/
-
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: _listaSeleccion()),
-                        duration: const Duration(seconds: 1),
+                      const SnackBar(
+                        content: Text("Dando de alta"),
+                        duration: Duration(seconds: 1),
                       ),
                     );
                     addUser();
+                    try {
+                      UserCredential userCredential = await FirebaseAuth
+                          .instance
+                          .createUserWithEmailAndPassword(
+                              email: _email, password: _password);
+                    } on FirebaseAuthException catch (e) {
+                      if (e.code == 'weak-password') {
+                        Fluttertoast.showToast(
+                            msg: "La contraseña es muy débil",
+                            gravity: ToastGravity.CENTER,
+                            toastLength: Toast.LENGTH_LONG,
+                            timeInSecForIosWeb: 2);
+                      } else if (e.code == 'email-already-in-use') {
+                        Fluttertoast.showToast(
+                            msg: "El correo ya está en uso",
+                            gravity: ToastGravity.CENTER,
+                            toastLength: Toast.LENGTH_LONG,
+                            timeInSecForIosWeb: 2);
+                      }
+                    } catch (e) {
+                      print(e);
+                    }
+                    context.read<AuthentificationFirebase>().signUp(
+                      email: _email,
+                      password: _password,
+                    );
+
                   } else {
                     Fluttertoast.showToast(
                         msg: "Por favor rellene todos los campos",
