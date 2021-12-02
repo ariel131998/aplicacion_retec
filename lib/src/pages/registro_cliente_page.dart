@@ -34,7 +34,8 @@ class _RegistroClientePageState extends State<RegistroClientePage> {
     Future<void> addUser() {
       // Call the user's CollectionReference to add a new user
       return cuentas
-          .add({
+          .doc(_email)
+          .set({
             'correo': _email,
             'contraseña': _password,
             'nombre': _name, // John Doe
@@ -45,7 +46,7 @@ class _RegistroClientePageState extends State<RegistroClientePage> {
             'ccv': _ccv, // 42
             'registro': _registerDate,
             'tipo': "Cliente",
-            'imagen': ""
+            'imagen': "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
           })
           .then((value) => print("User Added"))
           .catchError((error) => print("Failed to add user: $error"));

@@ -4,17 +4,16 @@ import 'package:flutter/material.dart';
 Widget buscarScreen(BuildContext context) {
   return Scaffold(
       appBar: AppBar(
-        title: const Center(
-          child: Text(
-            'Busca Reteccito',
-            style: TextStyle(
-              fontFamily: 'Myriadpro',
-              fontSize: 22,
-              fontWeight: FontWeight.w700,
-              color: Colors.white,
-            ),
+        title: const Text(
+          'Busca Reteccito',
+          style: TextStyle(
+            fontFamily: 'Myriadpro',
+            fontSize: 22,
+            fontWeight: FontWeight.w700,
+            color: Colors.white,
           ),
         ),
+        automaticallyImplyLeading: false,
         actions: <Widget>[
           IconButton(
             icon: const Icon(
@@ -28,10 +27,9 @@ Widget buscarScreen(BuildContext context) {
         ],
       ),
       drawer: const Drawer(), //animacion de dibujado de nuevo widget
-      body:  Center(
+      body: Center(
         child: ImagenLogo(),
-      )
-  );
+      ));
 }
 
 Widget _busqueda() {
@@ -146,7 +144,7 @@ class DataSearch extends SearchDelegate<String> {
     //     child: Text(query),
     //   ),
     // );
-     throw UnimplementedError();
+    throw UnimplementedError();
     //var db = FirebaseFirestore.instance;
     //CollectionReference user = db.collection('usuarios');
     //user.snapshots.
@@ -195,7 +193,6 @@ class DataSearch extends SearchDelegate<String> {
     //   ),
     // );
     //Navigator.of(context).pushNamed('/PagoScreen');
-
   }
 
   //no estan funcionando las obtenciones de los datos
@@ -220,15 +217,15 @@ class DataSearch extends SearchDelegate<String> {
         datosMap.add(element.get('name'));
         datosMapCategoria.add(element.get('categoria'));
 
-          datosEstrellas.add(element.get('Calficacion'));
-          datoslogo.add(element.get('logo'));
-          datostiempo.add(element.get('tiempo'));
+        datosEstrellas.add(element.get('Calficacion'));
+        datoslogo.add(element.get('logo'));
+        datostiempo.add(element.get('tiempo'));
       });
     });
     //esta obteniendo nada
     List<String> datosMapQuery = []; //buscaremos por categoria
     List<String> datosCategoriaQuery = [];
-    
+
     FirebaseFirestore.instance.collection('usuarios').get().then((value) {
       value.docs.forEach((element) {
         String prueba = element.get('categoria');
@@ -260,14 +257,14 @@ class DataSearch extends SearchDelegate<String> {
           itemCount: suggestionList.length,
           //itemCount: snapshot.data!.docs.length,
           itemBuilder: (context, index) => ListTile(
-            onTap: (){
+            onTap: () {
               Navigator.of(context).pushNamed('/PagoScreen', arguments: {
-                    'name': suggestionList[index] ,
-                    'categoria': suggestionListCate[index],
-                    'tiempo':  datostiempo[index],
-                    'estrellas': datosEstrellas[index],
-                    'logo': datoslogo[index]
-                  });
+                'name': suggestionList[index],
+                'categoria': suggestionListCate[index],
+                'tiempo': datostiempo[index],
+                'estrellas': datosEstrellas[index],
+                'logo': datoslogo[index]
+              });
               //showResults(context);//ya es un metodo heredado
             },
             leading: const Icon(Icons.person),

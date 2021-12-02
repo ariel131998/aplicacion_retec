@@ -38,9 +38,9 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
         FirebaseFirestore.instance.collection('cuentas');
 
     Future<void> addUser() {
-
       return cuentas
-          .add({
+          .doc(_email)
+          .set({
             'correo': _email,
             'contraseña': _password,
             'nombre': _name,
@@ -50,7 +50,7 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
             'fecha_vencimiento': _cardDate,
             'ccv': _ccv,
             'registro': _registerDate,
-            'imagen': "",
+            'imagen': "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
             'tipo': "Reteccito",
             'trabajos': _jobs
           })
@@ -72,47 +72,47 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
           shrinkWrap: true,
           children: <Widget>[
             SizedBox(height: boxHeight),
-              TextFormField(
-                keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
-                    fillColor: Color(0xFFE0E0E0),
-                    filled: true,
-                    border: OutlineInputBorder(),
-                    labelText: 'Correo electrónico',
-                    hintText: 'Correo electrónico'),
-                validator: (String? email) {
-                  if (email == null ||
-                      email.isEmpty ||
-                      !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                          .hasMatch(email)) {
-                    return 'Por favor, ingrese un email válido';
-                  }
-                  return null;
-                },
-                onSaved: (val) => _email = val!,
-              ),
-              SizedBox(height: boxHeight),
-              TextFormField(
-                obscuringCharacter: '•',
-                obscureText: true,
-                keyboardType: TextInputType.visiblePassword,
-                decoration: const InputDecoration(
-                    fillColor: Color(0xFFE0E0E0),
-                    filled: true,
-                    border: OutlineInputBorder(),
-                    labelText: 'Contraseña',
-                    hintText: 'Contraseña'),
-                validator: (String? password) {
-                  if (password == null ||
-                      password.isEmpty ||
-                      password.length < 5) {
-                    return 'Por favor, ingrese una contraseña válida';
-                  }
-                  return null;
-                },
-                onSaved: (val) => _password = val!,
-              ),
-              SizedBox(height: boxHeight),
+            TextFormField(
+              keyboardType: TextInputType.emailAddress,
+              decoration: const InputDecoration(
+                  fillColor: Color(0xFFE0E0E0),
+                  filled: true,
+                  border: OutlineInputBorder(),
+                  labelText: 'Correo electrónico',
+                  hintText: 'Correo electrónico'),
+              validator: (String? email) {
+                if (email == null ||
+                    email.isEmpty ||
+                    !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                        .hasMatch(email)) {
+                  return 'Por favor, ingrese un email válido';
+                }
+                return null;
+              },
+              onSaved: (val) => _email = val!,
+            ),
+            SizedBox(height: boxHeight),
+            TextFormField(
+              obscuringCharacter: '•',
+              obscureText: true,
+              keyboardType: TextInputType.visiblePassword,
+              decoration: const InputDecoration(
+                  fillColor: Color(0xFFE0E0E0),
+                  filled: true,
+                  border: OutlineInputBorder(),
+                  labelText: 'Contraseña',
+                  hintText: 'Contraseña'),
+              validator: (String? password) {
+                if (password == null ||
+                    password.isEmpty ||
+                    password.length < 5) {
+                  return 'Por favor, ingrese una contraseña válida';
+                }
+                return null;
+              },
+              onSaved: (val) => _password = val!,
+            ),
+            SizedBox(height: boxHeight),
             TextFormField(
               textCapitalization: TextCapitalization.words,
               keyboardType: TextInputType.name,
@@ -187,14 +187,16 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
                           title: Text(key),
                           value: values[key],
                           onChanged: (bool? value) {
-                            if(value != null){
+                            if (value != null) {
                               setState(() {
                                 values[key] = value;
                               });
-                              if(values[key]!){
-                                print("El checkbox "+key+" fue establecido como true");
+                              if (values[key]!) {
+                                print("El checkbox " +
+                                    key +
+                                    " fue establecido como true");
                                 _jobs.add(key);
-                              }else{
+                              } else {
                                 _jobs.remove(key);
                               }
                               print(_jobs);
@@ -316,10 +318,9 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
                       print(e);
                     }
                     context.read<AuthentificationFirebase>().signUp(
-                      email: _email,
-                      password: _password,
-                    );
-
+                          email: _email,
+                          password: _password,
+                        );
                   } else {
                     Fluttertoast.showToast(
                         msg: "Por favor rellene todos los campos",

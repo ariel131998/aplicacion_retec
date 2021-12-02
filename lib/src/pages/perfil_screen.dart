@@ -1,14 +1,14 @@
 import 'dart:io';
-
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_retec/authentification/authentification_firebase.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path/path.Dart';
-import 'package:provider/src/provider.dart';
 import 'package:firebase_storage/firebase_storage.Dart';
+import 'package:firebase_auth/firebase_auth.dart';
+// ignore: implementation_imports
+import 'package:provider/src/provider.dart';
 
 class PerfilScreen extends StatefulWidget {
   const PerfilScreen({Key? key}) : super(key: key);
@@ -24,12 +24,18 @@ class _PerfilScreenState extends State<PerfilScreen> {
   var firebaseUser = FirebaseAuth.instance.currentUser;
   // ignore: unused_field
   String _nombre = '';
+  String _nom = '';
   String _foto = '';
   String _telefono = '';
+  String _tel = '';
   String _direccion = '';
+  String _dir = '';
   File? _imageFile;
 
-  get storage => null;
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,11 +68,11 @@ class _PerfilScreenState extends State<PerfilScreen> {
             if (snapshot.connectionState == ConnectionState.done) {
               Map<String, dynamic> data =
                   snapshot.data!.data() as Map<String, dynamic>;
-                  print(data);
+              //print(data);
               _foto = data["imagen"];
               _nombre = data["nombre"];
               _telefono = data["telefono"];
-              _direccion = data["dirección"];
+              _direccion = data["direccion"];
             }
             return ListView(
               padding:
@@ -141,6 +147,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
       if (_foto != null) {
         return CircleAvatar(
           foregroundImage: NetworkImage(_foto),
+          backgroundImage: const AssetImage('assets/eclipse.gif'),
           radius: 10,
           backgroundColor: Colors.amber,
         );
@@ -192,10 +199,8 @@ class _PerfilScreenState extends State<PerfilScreen> {
   void _openGallery(BuildContext context) async {
     var picture = await ImagePicker().pickImage(source: ImageSource.gallery);
     setState(() {
-      try {
-        _imageFile = File(picture!.path);
-      } on Exception catch (_) {
-        throw Exception("Error on server");
+      if (picture != null) {
+        _imageFile = File(picture.path);
       }
     });
     Navigator.of(context).pop();
@@ -204,13 +209,32 @@ class _PerfilScreenState extends State<PerfilScreen> {
   Future<void> _openCamera(BuildContext context) async {
     var picture = await ImagePicker().pickImage(source: ImageSource.camera);
     setState(() {
-      _imageFile = File(picture!.path);
+      if (picture != null) {
+        _imageFile = File(picture.path);
+      }
     });
     Navigator.of(context).pop();
   }
 
   Widget _nombrePerfil() {
-    return TextField(
+    return TextFormField(
+        initialValue: _nombre,
+        textCapitalization: TextCapitalization.sentences,
+        decoration: InputDecoration(
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
+            hintText: 'Nombre Completo',
+            labelText: 'Nombre',
+            icon: const Icon(Icons.account_circle)),
+        onChanged: (valor) {
+          setState(() {
+            _nom = valor;
+            // ignore: avoid_print
+            print(_nom);
+          });
+        });
+
+    /* TextField(
       //autofocus: true,
       controller: TextEditingController(text: _nombre),
       textCapitalization: TextCapitalization.sentences,
@@ -224,11 +248,26 @@ class _PerfilScreenState extends State<PerfilScreen> {
           _nombre = valor;
         });
       },
-    );
+    );*/
   }
 
   Widget _telefonoPerfil() {
-    return TextField(
+    return TextFormField(
+        initialValue: _telefono,
+        textCapitalization: TextCapitalization.sentences,
+        decoration: InputDecoration(
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
+            hintText: 'Teléfono',
+            labelText: 'Teléfono',
+            icon: const Icon(Icons.phone_android)),
+        onChanged: (valor) {
+          setState(() {
+            _tel = valor;
+          });
+        });
+
+    /*TextField(
       //autofocus: true,
       controller: TextEditingController(text: _telefono),
       textCapitalization: TextCapitalization.sentences,
@@ -242,11 +281,26 @@ class _PerfilScreenState extends State<PerfilScreen> {
           _telefono = _telefono;
         });
       },
-    );
+    );*/
   }
 
   Widget _direccionPerfil() {
-    return TextField(
+    return TextFormField(
+        initialValue: _direccion,
+        textCapitalization: TextCapitalization.sentences,
+        decoration: InputDecoration(
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
+            hintText: 'Dirección',
+            labelText: 'Dirección',
+            icon: const Icon(Icons.location_on_outlined)),
+        onChanged: (valor) {
+          setState(() {
+            _dir = valor;
+            // print(_dir);
+          });
+        });
+    /*TextField(
       //autofocus: true,
       controller: TextEditingController(text: _direccion),
       textCapitalization: TextCapitalization.sentences,
@@ -260,7 +314,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
           _direccion = valor;
         });
       },
-    );
+    );*/
   }
 
   Widget _guardarCambios() {
@@ -283,20 +337,68 @@ class _PerfilScreenState extends State<PerfilScreen> {
 
   void upChanges() async {
     if (_imageFile != null) {
-      await uploadImage(_imageFile!).then((value) {
-        users.doc(firebaseUser!.email).set({
-          "imagen": value ?? _foto,
-          "nombre": _nombre,
-          "telefono": _telefono,
-          "dirección": _direccion,
+      try {
+        if (_nom == "") {
+          _nom = _nombre;
+        }
+        if (_tel == "") {
+          _tel = _telefono;
+        }
+        if (_dir == "") {
+          _dir = _direccion;
+        }
+        await uploadImage(_imageFile!).then((value) {
+          users.doc(firebaseUser!.email).update({
+            "imagen": value ?? _foto,
+            "nombre": _nom,
+            "telefono": _tel,
+            "dirección": _dir,
+          });
         });
-      });
+        Fluttertoast.showToast(
+          msg: "Información Actualizada",
+          gravity: ToastGravity.BOTTOM,
+          textColor: Colors.black,
+          backgroundColor: Colors.amber[200],
+        );
+      } on FirebaseAuthException catch (e) {
+        Fluttertoast.showToast(
+          msg: e.message.toString(),
+          gravity: ToastGravity.BOTTOM,
+          textColor: Colors.black,
+          backgroundColor: Colors.amber[200],
+        );
+      }
     } else {
-      users.doc(firebaseUser!.email).set({
-        "nombre": _nombre,
-        "telefono": _telefono,
-        "dirección": _direccion,
-      });
+      try {
+        if (_nom == "") {
+          _nom = _nombre;
+        }
+        if (_tel == "") {
+          _tel = _telefono;
+        }
+        if (_dir == "") {
+          _dir = _direccion;
+        }
+        users.doc(firebaseUser!.email).update({
+          "nombre": _nom,
+          "telefono": _tel,
+          "dirección": _dir,
+        });
+        Fluttertoast.showToast(
+          msg: "Información Actualizada",
+          gravity: ToastGravity.BOTTOM,
+          textColor: Colors.black,
+          backgroundColor: Colors.amber[200],
+        );
+      } on FirebaseAuthException catch (e) {
+        Fluttertoast.showToast(
+          msg: e.message.toString(),
+          gravity: ToastGravity.BOTTOM,
+          textColor: Colors.black,
+          backgroundColor: Colors.amber[200],
+        );
+      }
     }
   }
 
