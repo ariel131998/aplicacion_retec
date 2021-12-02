@@ -235,13 +235,13 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
                     .length, //cantidad de elementos que se encuentran en la base de datos
                 itemBuilder: (BuildContext context, int index) {
                   //inndex cambiar por doc de snapshot
-                  nombre = snapshot.data!.docs.elementAt(index).get("nombre");
+                  imagen = snapshot.data!.docs.elementAt(index).get("nombre");
                   categoria =
                       snapshot.data!.docs.elementAt(index).get("categoria");
                   tiempo = snapshot.data!.docs.elementAt(index).get("tiempo");
                   estrellas =
                       snapshot.data!.docs.elementAt(index).get("Calficacion");
-                  imagen = snapshot.data!.docs.elementAt(index).get("imagen");
+                  logo = snapshot.data!.docs.elementAt(index).get("imagen");
                   return Column(
                     children: [
                       _crearTargeta(nombre, categoria, tiempo, estrellas, imagen),
