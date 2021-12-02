@@ -73,11 +73,10 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
       return const Text(
         'Encuentra al personal necesario para tu problema',
         style: TextStyle(
-          color: Colors.white,
-          fontSize: 19.0,
-          fontFamily: 'Myriadpro',
-          fontWeight: FontWeight.w700
-        ),
+            color: Colors.white,
+            fontSize: 19.0,
+            fontFamily: 'Myriadpro',
+            fontWeight: FontWeight.w700),
       );
     });
   }
@@ -109,9 +108,16 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
               Text(tiempo),
               TextButton(
                 onPressed: () {
-                  _contratarServicio(name, context, logo, categoria);
+                  _contratarServicio(
+                    name,
+                    categoria,
+                    tiempo,
+                    estrellas,
+                    logo,
+                    context,
+                  );
                 },
-                child: Text('Contratar'),
+                child: const Text('Contratar'),
               ),
               const Icon(Icons.star_outline_sharp),
               Text(estrellas),
@@ -123,7 +129,8 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
     );
   }
 
-  void _contratarServicio(String name, BuildContext context, String logo, String categoria) {
+  void _contratarServicio(String name, String categoria, String tiempo,
+      String estrellas, String logo, BuildContext context) {
     double costo = 100;
     showDialog(
       context: context,
@@ -140,12 +147,17 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
           ]),
           actions: <Widget>[
             ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed('/PagoScreen');
-                //_crearPedido(name,costo,categoria); //checar donde mandar a crear pedido a base de datos
-              }, 
-              child: Text('Confirmar')
-            ),
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/PagoScreen', arguments: {
+                    'name': name,
+                    'categoria': categoria,
+                    'tiempo': tiempo,
+                    'estrellas': estrellas,
+                    'logo': logo,
+                  });
+                  //_crearPedido(name,costo,categoria); //checar donde mandar a crear pedido a base de datos
+                },
+                child: const Text('Confirmar')),
             ElevatedButton(
                 onPressed: () => Navigator.of(context).pop(),
                 child: const Text('Cancelar')),
@@ -334,7 +346,6 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
     collectionReference.add(
         informacionUsuario); //se tendria que ir modificando la informacion del usuario.
   }
-
 }
 
 // collectionReference.snapshots().listen((snapshot) {

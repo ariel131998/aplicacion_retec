@@ -22,6 +22,14 @@ class _PagoScreenState extends State<PagoScreen> {
   final startAddressController = TextEditingController();
   final LatLng _center = const LatLng(45.521563, -122.677433);
 
+  Map? arguments;
+
+  final Map _precio = {
+    'Electricista': '500.00',
+    'Albañileria': '600.00',
+    'Plomeria': '400.00',
+  };
+
   final List<String> _opciones = ['Albañileria', 'Electricista', 'Plomeria'];
   final List<String> _formasP = [
     'xxxxxxxxxxxxxx2345',
@@ -43,10 +51,16 @@ class _PagoScreenState extends State<PagoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    arguments = ModalRoute.of(context)!.settings.arguments as Map?;
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Servicio', style: TextStyle(fontFamily: 'Myriadpro', fontWeight: FontWeight.w700),),
+        title: const Text(
+          'Servicio',
+          style:
+              TextStyle(fontFamily: 'Myriadpro', fontWeight: FontWeight.w700),
+        ),
       ),
       body: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 20.0),
@@ -76,37 +90,46 @@ class _PagoScreenState extends State<PagoScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             mainAxisSize: MainAxisSize.max,
             children: [
-              const Image(
-                image: AssetImage('assets/electricista.png'),
+              Image.network(
+                arguments!['logo'],
                 width: 60,
                 height: 60,
               ),
+              /*const Image(
+                image: AssetImage('assets/electricista.png'),
+                width: 60,
+                height: 60,
+              ),*/
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Text(
-                    'Nombre del Rectecito',
+                    arguments!['name'],
                     textAlign: TextAlign.left,
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 13),
                   ),
-                  Text('Servicio',
+                  Text(arguments!['categoria'],
                       textAlign: TextAlign.left,
-                      style: TextStyle(fontWeight: FontWeight.w600)),
-                  Text('Tiempo',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w600, fontSize: 13)),
+                  Text(arguments!['tiempo'],
                       textAlign: TextAlign.left,
-                      style: TextStyle(fontWeight: FontWeight.w600))
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w600, fontSize: 13))
                 ],
               ),
               const SizedBox(width: 50.0),
             ],
           ),
           Positioned(
-            child: Row(children: const [
-              Icon(Icons.star_border_rounded, size: 30),
-              Text('4.5',
-                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
-              SizedBox(width: 5.0)
+            child: Row(children: [
+              const Icon(Icons.star_border_rounded, size: 30),
+              Text(arguments!['estrellas'],
+                  style: const TextStyle(
+                      fontSize: 15, fontWeight: FontWeight.bold)),
+              const SizedBox(width: 5.0)
             ]),
             /*Image(
               image: AssetImage('assets/electricista.png'),
@@ -309,22 +332,24 @@ class _PagoScreenState extends State<PagoScreen> {
     return Container(
         padding: const EdgeInsets.all(15),
         child: Row(
-          children: const [
-            Align(
+          children: [
+            const Align(
                 alignment: Alignment.centerLeft,
                 child: Text('Total',
                     style: TextStyle(
                       fontSize: 18,
                     ))),
-            SizedBox(width: 100.0),
-            Icon(Icons.paid_outlined),
-            SizedBox(width: 5.0),
+            const SizedBox(width: 120.0),
+            //const SizedBox(width: 5.0),
             Align(
                 alignment: Alignment.centerRight,
-                child: Text('2000.0',
-                    style: TextStyle(
-                      fontSize: 18,
-                    ))),
+                child: Row(children: [
+                  const Icon(Icons.paid_outlined),
+                  Text(_precio[_opcionS],
+                      style: const TextStyle(
+                        fontSize: 18,
+                      ))
+                ])),
           ],
         ));
   }

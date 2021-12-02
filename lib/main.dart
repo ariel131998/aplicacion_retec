@@ -41,6 +41,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(primarySwatch: Palette.kToDark, fontFamily: 'SegoeUi'),
+        title: 'Retec',
         routes: getAplicationRoutes(),
         //initialRoute: '/LoginScreen',
         home:
