@@ -13,7 +13,7 @@ class RegistroRetecPage extends StatefulWidget {
 }
 
 class _RegistroRetecPageState extends State<RegistroRetecPage> {
-    Map<String, bool> values = {
+  Map<String, bool> values = {
     'Plomería': false,
     'Electricista': false,
     'Albañilería': false,
@@ -39,7 +39,6 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
         FirebaseFirestore.instance.collection('cuentas');
 
     Future<void> addUser() {
-<<<<<<< HEAD
       FirebaseFirestore.instance.collection('cuentas').doc(_email).set({
         'correo': _email,
         'contraseña': _password,
@@ -55,12 +54,9 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
         'trabajos': _jobs,
         'categoria': _jobs[0],
         'tiempo': "A 5 minutos",
-        'estrellas': "3"
+        'Calficacion': "3"
         // ignore: avoid_print
       }).then((value) => print("User Added"));
-=======
-      // Call the user's CollectionReference to add a new user
->>>>>>> main
       return cuentas
           .doc(_email)
           .set({
@@ -75,13 +71,10 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
             'registro': _registerDate,
             'tipo': "Reteccito",
             'trabajos': _jobs,
-<<<<<<< HEAD
             'categoria': _jobs[0],
             'tiempo': "A 5 minutos",
-            'estrellas': "3"
-=======
+            'Calficacion': "3",
             'imagen': "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
->>>>>>> main
           })
           .then((value) => print("User Added"))
           .catchError((error) => print("Failed to add user: $error"));
@@ -193,48 +186,48 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
                 },
                 onSaved: (val) => _address = val!,
               ),
-             Container(
-              padding: const EdgeInsets.only(
-                top: 10.0,
-              ),
-              height: 50,
-              child: ListView.builder(
-                //physics: const NeverScrollableScrollPhysics(),
-                scrollDirection: Axis.vertical,
-                itemCount: 1,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(right: 2.0, left: 2.0),
-                    child: Column(
-                      children: values.keys.map((String key) {
-                        return CheckboxListTile(
-                          contentPadding: EdgeInsets.all(0.0),
-                          activeColor: Color.fromRGBO(242, 210, 114, 2.0),
-                          title: Text(key),
-                          value: values[key],
-                          onChanged: (bool? value) {
-                            if (value != null) {
-                              setState(() {
-                                values[key] = value;
-                              });
-                              if (values[key]!) {
-                                print("El checkbox " +
-                                    key +
-                                    " fue establecido como true");
-                                _jobs.add(key);
-                              } else {
-                                _jobs.remove(key);
+              Container(
+                padding: const EdgeInsets.only(
+                  top: 10.0,
+                ),
+                height: 50,
+                child: ListView.builder(
+                  //physics: const NeverScrollableScrollPhysics(),
+                  scrollDirection: Axis.vertical,
+                  itemCount: 1,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 2.0, left: 2.0),
+                      child: Column(
+                        children: values.keys.map((String key) {
+                          return CheckboxListTile(
+                            contentPadding: EdgeInsets.all(0.0),
+                            activeColor: Color.fromRGBO(242, 210, 114, 2.0),
+                            title: Text(key),
+                            value: values[key],
+                            onChanged: (bool? value) {
+                              if (value != null) {
+                                setState(() {
+                                  values[key] = value;
+                                });
+                                if (values[key]!) {
+                                  print("El checkbox " +
+                                      key +
+                                      " fue establecido como true");
+                                  _jobs.add(key);
+                                } else {
+                                  _jobs.remove(key);
+                                }
+                                print(_jobs);
                               }
-                              print(_jobs);
-                            }
-                          },
-                        );
-                      }).toList(),
-                    ),
-                  );
-                },
+                            },
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  },
+                ),
               ),
-            ),
               SizedBox(height: boxHeight),
               TextFormField(
                 keyboardType: TextInputType.number,
@@ -304,12 +297,9 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
                   ],
                 ),
               ),
-              
-
             ],
           ),
         ),
-        
       ),
 
       bottomNavigationBar: Padding(
@@ -336,7 +326,7 @@ class _RegistroRetecPageState extends State<RegistroRetecPage> {
                           .instance
                           .createUserWithEmailAndPassword(
                               email: _email, password: _password);
-                      
+
                       addUser();
                     } on FirebaseAuthException catch (e) {
                       if (e.code == 'weak-password') {

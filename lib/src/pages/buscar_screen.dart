@@ -214,11 +214,11 @@ class DataSearch extends SearchDelegate<String> {
     FirebaseFirestore.instance.collection('usuarios').get().then((value) {
       value.docs.forEach((element) {
         //element.get('name');
-        datosMap.add(element.get('name'));
+        datosMap.add(element.get('nombre'));
         datosMapCategoria.add(element.get('categoria'));
 
         datosEstrellas.add(element.get('Calficacion'));
-        datoslogo.add(element.get('logo'));
+        datoslogo.add(element.get('imagen'));
         datostiempo.add(element.get('tiempo'));
       });
     });
@@ -230,10 +230,10 @@ class DataSearch extends SearchDelegate<String> {
       value.docs.forEach((element) {
         String prueba = element.get('categoria');
         if (prueba.contains(query) == true) {
-          datosMapQuery.add(element.get('name'));
+          datosMapQuery.add(element.get('nombre'));
           datosCategoriaQuery.add(element.get('categoria'));
           datosEstrellas.add(element.get('Calficacion'));
-          datoslogo.add(element.get('logo'));
+          datoslogo.add(element.get('imagen'));
           datostiempo.add(element.get('tiempo'));
         }
       });

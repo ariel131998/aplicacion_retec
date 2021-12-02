@@ -190,11 +190,7 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
   // }
 
   Widget _crearListaTarjetas2() {
-<<<<<<< HEAD
     String nombre = '', categoria = '', tiempo = '', estrellas = '', logo = '';
-=======
-    String imagen = '', categoria = '', tiempo = '', estrellas = '', nombre = '';
->>>>>>> main
     return Scaffold(
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(120.0),
@@ -239,11 +235,7 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
                     .length, //cantidad de elementos que se encuentran en la base de datos
                 itemBuilder: (BuildContext context, int index) {
                   //inndex cambiar por doc de snapshot
-<<<<<<< HEAD
                   nombre = snapshot.data!.docs.elementAt(index).get("nombre");
-=======
-                  imagen = snapshot.data!.docs.elementAt(index).get("nombre");
->>>>>>> main
                   categoria =
                       snapshot.data!.docs.elementAt(index).get("categoria");
                   tiempo = snapshot.data!.docs.elementAt(index).get("tiempo");
@@ -252,11 +244,7 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
                   logo = snapshot.data!.docs.elementAt(index).get("imagen");
                   return Column(
                     children: [
-<<<<<<< HEAD
                       _crearTargeta(nombre, categoria, tiempo, estrellas, logo),
-=======
-                      _crearTargeta(nombre, categoria, tiempo, estrellas, imagen),
->>>>>>> main
                       const SizedBox(height: 15.0),
                     ],
                   );
