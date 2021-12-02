@@ -190,7 +190,7 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
   // }
 
   Widget _crearListaTarjetas2() {
-    String imagen = '', categoria = '', tiempo = '', estrellas = '', logo = '';
+    String imagen = '', categoria = '', tiempo = '', estrellas = '', nombre = '';
     return Scaffold(
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(120.0),
@@ -244,7 +244,7 @@ class _ClienteScreen2 extends State<ClienteScreen2> {
                   logo = snapshot.data!.docs.elementAt(index).get("imagen");
                   return Column(
                     children: [
-                      _crearTargeta(imagen, categoria, tiempo, estrellas, logo),
+                      _crearTargeta(nombre, categoria, tiempo, estrellas, imagen),
                       const SizedBox(height: 15.0),
                     ],
                   );

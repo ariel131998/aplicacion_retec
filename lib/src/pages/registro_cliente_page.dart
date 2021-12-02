@@ -250,12 +250,13 @@ class _RegistroClientePageState extends State<RegistroClientePage> {
                         duration: Duration(seconds: 1),
                       ),
                     );
-                    addUser();
                     try {
                       UserCredential userCredential = await FirebaseAuth
                           .instance
                           .createUserWithEmailAndPassword(
                               email: _email, password: _password);
+                      
+                      addUser();
                     } on FirebaseAuthException catch (e) {
                       if (e.code == 'weak-password') {
                         Fluttertoast.showToast(
