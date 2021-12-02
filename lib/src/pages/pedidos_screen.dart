@@ -149,7 +149,7 @@ class _PedidosScreenState extends State<PedidosScreen> {
                       snapshot.data!.docs.elementAt(index).get("Categoria");
                   tiempo = snapshot.data!.docs.elementAt(index).get("tiempo");
                   estrellas =
-                      snapshot.data!.docs.elementAt(index).get("Calficacion");
+                      snapshot.data!.docs.elementAt(index).get("Calificacion");
                   logo = snapshot.data!.docs.elementAt(index).get("imagen");
                   costo = snapshot.data!.docs.elementAt(index).get("Costo");
                   status = snapshot.data!.docs.elementAt(index).get("status");
